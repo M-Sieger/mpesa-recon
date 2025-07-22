@@ -1,0 +1,36 @@
+.header {
+  width: 100%;
+  padding: 2rem 1rem;
+  text-align: center;
+  background-color: #1c1c1c;
+  border-bottom: 1px solid #333;
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #f6e05e;
+  margin: 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #ccc;
+  max-width: 90%;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+.flag {
+  width: 48px;
+  height: auto;
+  margin-bottom: 0.5rem;
+  border-radius: 3px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+}
