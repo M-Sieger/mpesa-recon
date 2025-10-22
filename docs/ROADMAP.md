@@ -59,13 +59,23 @@ Von 100 auf 1.000 zahlende Nutzer durch Feature-Verbesserung + organische Kanäl
 **Lösung:** Progressive Web App mit Offline-Support
 
 **Deliverables:**
-- [ ] React PWA (Vite + Tailwind)
-- [ ] Service Worker für Offline-Funktionalität
-- [ ] Shared-Backend (FastAPI bereits vorhanden)
-- [ ] Responsive Design (Mobile + Desktop)
+- [ ] **React PWA** (Vite + TypeScript + Tailwind)
+  - [ ] Aktuellen React-Prototype als Basis nutzen
+  - [ ] Service Worker für Offline-Funktionalität
+  - [ ] IndexedDB für lokale Datenhaltung
+  - [ ] Web-Manifest für PWA-Installation
+- [ ] **Shared-Backend** (FastAPI bereits vorhanden)
+  - [ ] Identische API-Endpoints wie Android-App
+  - [ ] CORS-Konfiguration für Web-Clients
+- [ ] **Responsive Design** (Mobile + Desktop)
+  - [ ] Mobile-First Design (iOS Safari-optimiert)
+  - [ ] Desktop-Layout für größere Screens
+  - [ ] Touch + Mouse/Keyboard-Input
 
 **Timeline:** Monat 5-6 (6 Wochen parallel zu 2.2)  
-**Impact:** TAM +15%, neue Nutzersegmente (Office-Worker)
+**Impact:** TAM +15%, neue Nutzersegmente (iOS-User, Office-Worker)
+
+**Note:** Aktueller `client/` Ordner wird als Basis verwendet
 
 ---
 

@@ -30,10 +30,24 @@ Technische Machbarkeit beweisen + Kernwertversprechen mit echten Nutzern validie
 ### Deliverables
 
 #### Woche 1-2: Development
-- [ ] Android-App Skeleton (Kotlin + Jetpack Compose)
-- [ ] Backend-API (FastAPI + PostgreSQL)
-- [ ] PDF-Parsing-Engine (Kreuzberg Integration)
-- [ ] Basic UI: Upload → Parse → Display Transactions
+- [ ] **Android-App Setup** (Kotlin + Jetpack Compose)
+  - [ ] Android Studio Projekt mit Multi-Module-Architektur
+  - [ ] Room Database für lokale Datenhaltung
+  - [ ] WorkManager für Background-Sync
+  - [ ] Hilt für Dependency Injection
+- [ ] **Backend-API** (FastAPI + PostgreSQL)
+  - [ ] FastAPI Server mit CORS
+  - [ ] Pydantic Models für Request/Response
+  - [ ] PostgreSQL mit SQLAlchemy
+  - [ ] PDF-Parsing-Endpoint (Kreuzberg Library)
+- [ ] **PDF-Parsing-Engine** (Python Backend)
+  - [ ] Kreuzberg Integration für M-Pesa PDFs
+  - [ ] CSV-Parser (Fallback)
+  - [ ] Parsing-Erfolgsrate >95% validieren
+- [ ] **Basic UI** (Android)
+  - [ ] Upload-Screen (Material 3 Design)
+  - [ ] Transaction-List mit LazyColumn
+  - [ ] Offline-First Architecture mit Repository Pattern
 
 #### Woche 3: Testing & Beta-Prep
 - [ ] Unit-Tests für Parser (>95% Coverage)
@@ -73,9 +87,16 @@ Erste Akquise-Kanäle testen + Wachstum auf 100+ aktive Nutzer
 ### Deliverables
 
 #### Woche 5: Public Beta Launch
-- [ ] App auf Google Play Store (Open Beta)
-- [ ] Landing-Page mit Value-Prop (WordPress/Webflow)
-- [ ] WhatsApp-Bot für Onboarding (Twilio API)
+- [ ] **Android App auf Google Play Store** (Open Beta Track)
+  - [ ] APK Build mit Release-Signing
+  - [ ] Google Play Console Setup
+  - [ ] Beta-Tester-Management
+- [ ] **Landing-Page** mit Value-Prop (WordPress/Webflow)
+  - [ ] APK Download-Link für Beta-Tester
+  - [ ] FAQ zu eTIMS-Compliance
+- [ ] **WhatsApp-Bot** für Onboarding (Twilio API)
+  - [ ] Automatische Willkommensnachricht
+  - [ ] Tutorial-Videos (Swahili/Englisch)
 
 #### Woche 6-7: Paid Marketing-Tests
 - [ ] Facebook Ads (KMU-Gruppen Targeting)
@@ -118,11 +139,18 @@ Zahlungsbereitschaft validieren + erste MRR generieren
 ### Deliverables
 
 #### Woche 9: Payment-Integration
-- [ ] Pesapal SDK Integration (Android)
-- [ ] Subscription-Management (Backend)
-- [ ] In-App-Purchase-Flow:
-  - Freemium → Standard Upgrade
-  - Standard → Premium Upgrade
+- [ ] **Pesapal SDK Integration** (Android)
+  - [ ] Pesapal Android SDK Setup
+  - [ ] M-Pesa Payment-Flow (Native)
+  - [ ] Payment-Confirmation-Handling
+- [ ] **Subscription-Management** (Backend)
+  - [ ] Subscription-Modelle (Freemium, Standard, Premium)
+  - [ ] Webhook für Payment-Notifications
+  - [ ] User-Tier-Verwaltung in DB
+- [ ] **In-App-Purchase-Flow** (Android UI)
+  - [ ] Upgrade-Screen mit Pricing-Tiers
+  - [ ] Freemium → Standard Upgrade
+  - [ ] Standard → Premium Upgrade
 
 #### Woche 10: Pricing-Test
 - [ ] Rollout Paid-Tiers (Freemium bleibt)

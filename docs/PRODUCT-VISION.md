@@ -132,18 +132,30 @@ Kenianische kleine und mittlere Unternehmen (KMU) stehen vor einer doppelten Her
 
 ### Frontend (Mobile)
 - **Plattform (MVP):** Native Android App (Kotlin + Jetpack Compose)
+- **Architecture:** Clean Architecture mit MVVM
+- **Key Libraries:**
+  - **Jetpack Compose:** Moderne deklarative UI
+  - **Room:** Lokale SQLite-Datenbank
+  - **WorkManager:** Background-Synchronisation
+  - **Hilt:** Dependency Injection
+  - **Retrofit:** API-Calls zum Backend
+  - **Coil:** Image Loading
+  - **DataStore:** App-Preferences
 - **Begründung:** 
-  - Android dominiert kenianischen Markt
+  - Android dominiert kenianischen Markt (80,8% Penetration)
   - Native Performance für finanzielle Anwendungen (Sicherheit, Reaktionsfähigkeit)
   - Beste Offline-Fähigkeiten (Room DB + WorkManager)
   - Zukunftssichere SMS-Parsing-Integration (READ_SMS-Permission)
+  - Material 3 Design für moderne, intuitive UX
 
 ### Frontend (Post-MVP)
 - **Plattform (6-12 Monate):** Progressive Web App (PWA)
+- **Tech-Stack:** React + Vite + TypeScript
 - **Begründung:**
   - Kosteneffiziente Erweiterung auf iOS & Desktop ohne separate native App
   - Service Worker für Offline-Funktionalität
   - Einfache Updates ohne App-Store-Review
+- **Note:** Aktueller React-Prototype dient als Proof-of-Concept für PWA-Phase
 
 ### Backend
 - **Framework:** Python 3.11+ mit FastAPI
@@ -165,11 +177,17 @@ Kenianische kleine und mittlere Unternehmen (KMU) stehen vor einer doppelten Her
   - PostgreSQL: Robust, JSONB-Support für flexible Schemas, bewährt für SaaS
 
 ### State Management (Android)
-- **Lösung:** Jetpack ViewModel + StateFlow
+- **Lösung:** Jetpack ViewModel + StateFlow + Compose State
+- **Architecture Pattern:** MVVM (Model-View-ViewModel)
+- **Data Flow:**
+  - **UI Layer:** Composables observieren ViewModels via StateFlow
+  - **Domain Layer:** Use Cases orchestrieren Business-Logik
+  - **Data Layer:** Repositories abstrahieren Datenquellen (Local Room DB + Remote API)
 - **Begründung:**
   - Native Android-Solution, kein zusätzliches Framework nötig
   - Lifecycle-aware, verhindert Memory-Leaks
   - Reaktives Pattern mit Kotlin-Coroutines
+  - Klare Separation of Concerns (Testability)
 
 ### Testing
 - **Unit-Tests:** JUnit 5 (Android), pytest (Backend)
@@ -326,15 +344,37 @@ Electronic Tax Invoice Management System (eTIMS) der Kenya Revenue Authority (KR
 
 ### ADR-001: Native Android statt Cross-Platform (Flutter/React Native)
 **Decision:** Native Android mit Kotlin + Jetpack Compose  
+**Status:** ✅ APPROVED  
+**Date:** 2025-10-22
+
+**Context:**
+- Kenianischer Markt ist 80,8% Android-dominiert
+- Offline-First ist kritische Anforderung (unreliable connectivity)
+- Finanz-App benötigt höchste Sicherheit und Performance
+- Zukünftige SMS-Parsing-Integration geplant
+
 **Reason:**  
-- Beste Offline-Performance (Room DB native integration)
-- Zukunftssichere SMS-Parsing-Fähigkeit (Android-Permissions)
-- Finanz-Apps benötigen maximale Sicherheit & Reaktionsfähigkeit
-- Team-Expertise in Android-Entwicklung vorhanden
+- **Beste Offline-Performance:** Room DB mit native integration, WorkManager für robustes Background-Sync
+- **Zukunftssichere SMS-Parsing-Fähigkeit:** READ_SMS Android-Permission nur in nativen Apps zuverlässig
+- **Finanz-Apps benötigen maximale Sicherheit & Reaktionsfähigkeit:** Direkter Zugriff auf Hardware-Security (Keystore)
+- **Schnellere Time-to-Market für MVP:** Fokus auf eine Plattform = schnellere Iteration
+- **Kleinere APK-Größe:** Kritisch für Nutzer mit begrenztem Speicher/Datenvolumen
 
 **Alternatives Considered:**
-- Flutter → Cross-Platform-Vorteil, aber schlechtere Offline-Performance & größere APK
-- React Native → Weniger native Integrations, Performance-Bottlenecks bei großen lokalen Datenbanken
+- **Flutter:** 
+  - ❌ Cross-Platform-Vorteil nicht relevant (iOS nur 15% Markt)
+  - ❌ Größere APK-Größe (~40MB vs ~15MB native)
+  - ❌ Schlechtere Offline-Performance mit sqflite
+  - ❌ SMS-Permissions komplexer zu handhaben
+- **React Native:** 
+  - ❌ Weniger native Integrations
+  - ❌ Performance-Bottlenecks bei großen lokalen Datenbanken
+  - ❌ Bridge-Overhead für häufige DB-Operationen
+
+**Consequences:**
+- ✅ iOS-Nutzer werden über PWA bedient (Post-MVP)
+- ✅ Aktueller React-Prototype wird zu PWA-Codebase
+- ✅ Entwickler benötigen Kotlin + Android-Expertise
 
 ### ADR-002: FastAPI statt Django/Flask für Backend
 **Decision:** FastAPI mit Python 3.11+  
