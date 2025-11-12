@@ -19,6 +19,8 @@ pdfplumber==0.10.3
 pandas==2.1.3
 tabula-py==2.9.0
 openpyxl==3.1.2
+pikepdf==8.10.1  # For password-protected PDFs
+tabulate==0.9.0  # Reporting in parser test harness
 
 # HTTP Client (for external APIs)
 httpx==0.25.2

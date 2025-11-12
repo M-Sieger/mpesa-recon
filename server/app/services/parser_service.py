@@ -24,7 +24,12 @@ class ParserService:
             List of transaction dictionaries
         """
         if file_type.lower() == "pdf":
-            return pdf_parser.parse_pdf(file_path)
+            parsed = pdf_parser.parse_pdf(file_path)
+            if isinstance(parsed, tuple):
+                transactions, _metadata = parsed
+            else:
+                transactions = parsed
+            return transactions
         elif file_type.lower() == "csv":
             return self._parse_csv(file_path)
         else:

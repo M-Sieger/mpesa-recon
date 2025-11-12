@@ -1,213 +1,383 @@
+"""PDF Parsing helpers for M-Recon.
+
+Parses M-Pesa PDF statements (including password-protected ones) and returns
+structured transaction data plus parsing metadata for downstream processing
+and analytics.
 """
-PDF Parsing Service
-Extracts M-Pesa transactions from PDF statements
-"""
-import pdfplumber
+from __future__ import annotations
+
+import io
+import logging
 import re
-from typing import List, Dict, Optional
+from dataclasses import asdict, dataclass
 from datetime import datetime
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
+
 import pandas as pd
+import pdfplumber
+import pikepdf
+
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True)
+class ParsedTransaction:
+    """Strongly typed representation of a single parsed transaction."""
+
+    transaction_id: str
+    date: str
+    time: Optional[str]
+    description: Optional[str]
+    amount: Decimal
 
 
 class PDFParserService:
-    """Service for parsing M-Pesa PDF statements"""
-    
-    def __init__(self):
-        # M-Pesa transaction patterns
-        self.transaction_patterns = {
-            "transaction_id": r"[A-Z0-9]{10,}",  # e.g., RKG7N5QWXT
-            "amount": r"KSh?\s?[\d,]+\.?\d*",
-            "date": r"\d{1,2}/\d{1,2}/\d{2,4}",
+    """Service responsible for parsing M-Pesa statements."""
+
+    def __init__(self) -> None:
+        # Regex fallbacks used when a statement does not expose table structures.
+        self.transaction_patterns: Dict[str, str] = {
+            "transaction_id": r"[A-Z0-9]{10,}",
+            "amount": r"(?:KSh?\.?)?\s?[\d,]+\.?\d{0,2}",
+            "date": r"\d{1,2}[/-]\d{1,2}[/-]\d{2,4}",
         }
-    
-    def parse_pdf(self, file_path: str) -> List[Dict]:
-        """
-        Parse M-Pesa PDF statement and extract transactions
-        
-        Args:
-            file_path: Path to PDF file
-            
-        Returns:
-            List of transaction dictionaries
-        """
-        transactions = []
-        
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+    def parse_pdf(
+        self,
+        file_path: str,
+        password: Optional[str] = None,
+        password_candidates: Optional[Sequence[str]] = None,
+    ) -> Tuple[List[Dict], Dict[str, Any]]:
+        """Parse a PDF file and return parsed transactions plus metadata."""
+
+        pdf = self._open_pdf(file_path, password, password_candidates)
+        transactions: List[ParsedTransaction] = []
+        seen_ids: set[str] = set()
+        page_methods: List[str] = []
+        duplicates_skipped = 0
+
+        total_pages = len(pdf.pages) if hasattr(pdf, "pages") else 0
+        metadata: Dict[str, Any] = {
+            "file_path": file_path,
+            "total_pages": total_pages,
+            "parsing_method": "unknown",
+            "statement_type": "Unknown",
+            "errors": [],
+            "table_pages": 0,
+            "text_pages": 0,
+            "duplicates_skipped": 0,
+        }
+
         try:
-            with pdfplumber.open(file_path) as pdf:
-                for page in pdf.pages:
-                    # Extract text
-                    text = page.extract_text()
-                    
-                    # Extract tables (M-Pesa statements often use tables)
-                    tables = page.extract_tables()
-                    
-                    if tables:
-                        transactions.extend(self._parse_tables(tables))
-                    elif text:
-                        transactions.extend(self._parse_text(text))
-            
-            return transactions
-        
-        except Exception as e:
-            raise Exception(f"PDF parsing failed: {str(e)}")
-    
-    def _parse_tables(self, tables: List) -> List[Dict]:
-        """Parse transactions from PDF tables"""
-        transactions = []
-        
+            for page_number, page in enumerate(pdf.pages, start=1):
+                tables = page.extract_tables() or []
+                text = page.extract_text() or ""
+
+                if tables:
+                    page_transactions = self._parse_tables(tables, page_number, metadata["errors"])
+                    metadata["table_pages"] += 1
+                    page_methods.append("table")
+                else:
+                    page_transactions = self._parse_text(text, page_number)
+                    metadata["text_pages"] += 1
+                    page_methods.append("text")
+
+                if metadata["statement_type"] == "Unknown" and text:
+                    detected = self._detect_statement_type(text)
+                    if detected:
+                        metadata["statement_type"] = detected
+
+                for txn in page_transactions:
+                    if txn.transaction_id in seen_ids:
+                        duplicates_skipped += 1
+                        continue
+                    seen_ids.add(txn.transaction_id)
+                    transactions.append(txn)
+        finally:
+            pdf.close()
+
+        metadata["duplicates_skipped"] = duplicates_skipped
+        metadata["total_transactions"] = len(transactions)
+        metadata["unique_transaction_ids"] = len(seen_ids)
+        metadata["parsing_method"] = self._resolve_parsing_method(page_methods)
+
+        return [asdict(txn) for txn in transactions], metadata
+
+    # ------------------------------------------------------------------
+    # PDF opening and decryption helpers
+    # ------------------------------------------------------------------
+    def _open_pdf(
+        self,
+        file_path: str,
+        password: Optional[str],
+        password_candidates: Optional[Sequence[str]],
+    ) -> pdfplumber.PDF:
+        """Open a PDF, trying multiple passwords if supplied."""
+
+        candidates: List[Optional[str]] = []
+        if password:
+            candidates.append(password)
+        if password_candidates:
+            candidates.extend(password_candidates)
+        if None not in candidates:
+            candidates.append(None)
+
+        last_error: Optional[Exception] = None
+        for candidate in self._dedupe_preserve_order(candidates):
+            try:
+                return pdfplumber.open(file_path, password=candidate)
+            except pdfplumber.pdf.PDFPasswordError as exc:
+                last_error = exc
+                logger.debug("Password attempt failed", exc_info=exc)
+            except TypeError:
+                # Some protected PDFs require full decryption before pdfplumber can read them.
+                decrypted_stream = self._decrypt_with_pikepdf(file_path, candidate)
+                if decrypted_stream is None:
+                    continue
+                try:
+                    return pdfplumber.open(decrypted_stream)
+                except Exception as inner_exc:  # noqa: BLE001
+                    last_error = inner_exc
+                    logger.debug("Opening decrypted stream failed", exc_info=inner_exc)
+            except Exception as exc:  # noqa: BLE001
+                last_error = exc
+                logger.debug("PDF open error", exc_info=exc)
+
+        message = "Unable to open PDF with supplied passwords" if last_error else "Unable to open PDF"
+        raise ValueError(message) from last_error
+
+    def _decrypt_with_pikepdf(
+        self, file_path: str, password: Optional[str]
+    ) -> Optional[io.BytesIO]:
+        """Attempt to decrypt PDF using pikepdf and return an in-memory stream."""
+
+        if not password:
+            return None
+
+        try:
+            with pikepdf.open(file_path, password=password) as pdf_file:
+                buffer = io.BytesIO()
+                pdf_file.save(buffer)
+                buffer.seek(0)
+                return buffer
+        except pikepdf.PasswordError:
+            logger.debug("pikepdf password error")
+            return None
+        except Exception:  # noqa: BLE001
+            logger.debug("pikepdf failed", exc_info=True)
+            return None
+
+    @staticmethod
+    def _dedupe_preserve_order(values: Iterable[Optional[str]]) -> Iterator[Optional[str]]:
+        seen: set[Optional[str]] = set()
+        for value in values:
+            if value in seen:
+                continue
+            seen.add(value)
+            yield value
+
+    # ------------------------------------------------------------------
+    # Parsing helpers
+    # ------------------------------------------------------------------
+    def _parse_tables(
+        self, tables: List, page_number: int, error_log: List[str]
+    ) -> List[ParsedTransaction]:
+        transactions: List[ParsedTransaction] = []
+
         for table in tables:
             if not table or len(table) < 2:
                 continue
-            
-            # Convert to DataFrame for easier processing
-            df = pd.DataFrame(table[1:], columns=table[0])
-            
-            # Common M-Pesa column names (case-insensitive matching)
+
+            df = pd.DataFrame(table[1:], columns=table[0]).replace({None: ""})
+            df.columns = df.columns.str.lower().str.strip()
+
             column_mapping = {
                 "receipt": "transaction_id",
                 "receipt no": "transaction_id",
+                "receipt number": "transaction_id",
                 "transaction id": "transaction_id",
+                "transaction number": "transaction_id",
+                "trans id": "transaction_id",
                 "date": "date",
                 "completion time": "time",
+                "time": "time",
                 "details": "description",
                 "transaction details": "description",
-                "paid in": "amount",
-                "withdrawn": "amount",
+                "description": "description",
+                "narration": "description",
+                "paid in": "credit",
+                "paid in (ksh)": "credit",
+                "credit": "credit",
+                "withdrawn": "debit",
+                "withdrawn (ksh)": "debit",
+                "debit": "debit",
                 "amount": "amount",
             }
-            
-            # Rename columns
-            df.columns = df.columns.str.lower().str.strip()
-            for old_name, new_name in column_mapping.items():
-                if old_name in df.columns:
-                    df.rename(columns={old_name: new_name}, inplace=True)
-            
-            # Extract transactions
+
+            for source, target in column_mapping.items():
+                if source in df.columns:
+                    df.rename(columns={source: target}, inplace=True)
+
             for _, row in df.iterrows():
-                transaction = self._extract_transaction_from_row(row)
+                transaction = self._extract_transaction_from_row(row, page_number, error_log)
                 if transaction:
                     transactions.append(transaction)
-        
+
         return transactions
-    
-    def _parse_text(self, text: str) -> List[Dict]:
-        """Parse transactions from plain text (fallback)"""
-        transactions = []
-        lines = text.split("\n")
-        
-        for line in lines:
-            # Try to extract transaction from line
-            transaction = self._extract_transaction_from_text(line)
-            if transaction:
-                transactions.append(transaction)
-        
-        return transactions
-    
-    def _extract_transaction_from_row(self, row: pd.Series) -> Optional[Dict]:
-        """Extract transaction data from DataFrame row"""
+
+    def _extract_transaction_from_row(
+        self, row: pd.Series, page_number: int, error_log: List[str]
+    ) -> Optional[ParsedTransaction]:
         try:
-            # Required fields
-            if "transaction_id" not in row or "date" not in row or "amount" not in row:
+            transaction_id = self._clean_string(row.get("transaction_id"))
+            if not transaction_id:
                 return None
-            
-            transaction_id = str(row.get("transaction_id", "")).strip()
-            if not transaction_id or transaction_id.lower() in ["nan", "none", ""]:
-                return None
-            
-            # Parse amount
-            amount_str = str(row.get("amount", "0"))
-            amount = self._parse_amount(amount_str)
-            if amount == 0:
-                return None
-            
-            # Parse date
-            date_str = str(row.get("date", ""))
-            parsed_date = self._parse_date(date_str)
+
+            date_value = self._clean_string(row.get("date"))
+            parsed_date = self._parse_date(date_value)
             if not parsed_date:
                 return None
-            
-            return {
-                "transaction_id": transaction_id,
-                "date": parsed_date,
-                "time": self._parse_time(str(row.get("time", ""))),
-                "description": str(row.get("description", "")).strip() or None,
-                "amount": amount,
-            }
-        
-        except Exception as e:
-            print(f"Error parsing row: {e}")
-            return None
-    
-    def _extract_transaction_from_text(self, text: str) -> Optional[Dict]:
-        """Extract transaction from text line (simplified)"""
-        # This is a basic implementation - can be enhanced
-        transaction_id_match = re.search(self.transaction_patterns["transaction_id"], text)
-        amount_match = re.search(self.transaction_patterns["amount"], text)
-        date_match = re.search(self.transaction_patterns["date"], text)
-        
-        if transaction_id_match and amount_match and date_match:
-            return {
-                "transaction_id": transaction_id_match.group(0),
-                "date": self._parse_date(date_match.group(0)),
-                "time": None,
-                "description": text.strip(),
-                "amount": self._parse_amount(amount_match.group(0)),
-            }
-        
-        return None
-    
-    def _parse_amount(self, amount_str: str) -> Decimal:
-        """Parse amount string to Decimal"""
-        try:
-            # Remove currency symbols and whitespace
-            cleaned = re.sub(r"[^\d,.]", "", amount_str)
-            # Remove thousands separators
-            cleaned = cleaned.replace(",", "")
-            return Decimal(cleaned) if cleaned else Decimal("0")
-        except:
-            return Decimal("0")
-    
-    def _parse_date(self, date_str: str) -> Optional[str]:
-        """Parse date string to ISO format (YYYY-MM-DD)"""
-        try:
-            date_str = date_str.strip()
-            
-            # Try common formats
-            formats = ["%d/%m/%Y", "%d/%m/%y", "%Y-%m-%d", "%d-%m-%Y"]
-            
-            for fmt in formats:
-                try:
-                    dt = datetime.strptime(date_str, fmt)
-                    return dt.strftime("%Y-%m-%d")
-                except ValueError:
-                    continue
-            
-            return None
-        except:
-            return None
-    
-    def _parse_time(self, time_str: str) -> Optional[str]:
-        """Parse time string to HH:MM:SS format"""
-        try:
-            time_str = time_str.strip()
-            if not time_str or time_str.lower() in ["nan", "none"]:
+
+            amount = self._resolve_amount_from_row(row)
+            if amount is None:
                 return None
-            
-            # Try common formats
-            formats = ["%H:%M:%S", "%H:%M", "%I:%M %p"]
-            
-            for fmt in formats:
-                try:
-                    dt = datetime.strptime(time_str, fmt)
-                    return dt.strftime("%H:%M:%S")
-                except ValueError:
-                    continue
-            
-            return None
-        except:
+
+            description = self._clean_string(row.get("description")) or None
+            time_value = self._parse_time(self._clean_string(row.get("time")))
+
+            return ParsedTransaction(
+                transaction_id=transaction_id,
+                date=parsed_date,
+                time=time_value,
+                description=description,
+                amount=amount,
+            )
+        except Exception as exc:  # noqa: BLE001
+            message = f"Row parsing failed on page {page_number}: {exc}"
+            error_log.append(message)
+            logger.debug(message, exc_info=exc)
             return None
 
+    def _parse_text(self, text: str, page_number: int) -> List[ParsedTransaction]:
+        transactions: List[ParsedTransaction] = []
 
-# Global instance
+        for line in text.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+
+            transaction_id_match = re.search(self.transaction_patterns["transaction_id"], line)
+            amount_match = re.search(self.transaction_patterns["amount"], line)
+            date_match = re.search(self.transaction_patterns["date"], line)
+
+            if not (transaction_id_match and amount_match and date_match):
+                continue
+
+            parsed_date = self._parse_date(date_match.group(0))
+            amount = self._parse_amount(amount_match.group(0))
+            if not parsed_date or amount is None:
+                continue
+
+            transactions.append(
+                ParsedTransaction(
+                    transaction_id=transaction_id_match.group(0),
+                    date=parsed_date,
+                    time=None,
+                    description=line,
+                    amount=amount,
+                )
+            )
+        return transactions
+
+    # ------------------------------------------------------------------
+    # Low-level parsing utilities
+    # ------------------------------------------------------------------
+    def _resolve_amount_from_row(self, row: pd.Series) -> Optional[Decimal]:
+        credit = self._parse_amount(row.get("credit"))
+        debit = self._parse_amount(row.get("debit"))
+        base_amount = self._parse_amount(row.get("amount"))
+
+        if credit is not None and credit != Decimal("0"):
+            return credit
+        if debit is not None and debit != Decimal("0"):
+            return -debit
+        return base_amount if base_amount not in (None, Decimal("0")) else None
+
+    def _parse_amount(self, value: object) -> Optional[Decimal]:
+        if value is None:
+            return None
+
+        text = self._clean_string(value)
+        if not text:
+            return None
+
+        cleaned = re.sub(r"[^\d.-]", "", text)
+        try:
+            return Decimal(cleaned)
+        except (InvalidOperation, ValueError):
+            logger.debug("Could not parse amount from value '%s'", value)
+            return None
+
+    def _parse_date(self, value: Optional[str]) -> Optional[str]:
+        if not value:
+            return None
+
+        value = value.strip()
+        formats = ["%d/%m/%Y", "%d/%m/%y", "%d-%m-%Y", "%Y-%m-%d"]
+        for fmt in formats:
+            try:
+                parsed = datetime.strptime(value, fmt)
+                return parsed.strftime("%Y-%m-%d")
+            except ValueError:
+                continue
+        logger.debug("Could not parse date from value '%s'", value)
+        return None
+
+    def _parse_time(self, value: Optional[str]) -> Optional[str]:
+        if not value:
+            return None
+
+        formats = ["%H:%M:%S", "%H:%M", "%I:%M %p"]
+        for fmt in formats:
+            try:
+                parsed = datetime.strptime(value, fmt)
+                return parsed.strftime("%H:%M:%S")
+            except ValueError:
+                continue
+        return None
+
+    @staticmethod
+    def _clean_string(value: object) -> str:
+        if value is None:
+            return ""
+        return str(value).strip()
+
+    @staticmethod
+    def _resolve_parsing_method(page_methods: Sequence[str]) -> str:
+        if not page_methods:
+            return "unknown"
+        unique_methods = {method for method in page_methods if method}
+        if not unique_methods:
+            return "unknown"
+        if len(unique_methods) == 1:
+            return unique_methods.pop()
+        return "mixed"
+
+    @staticmethod
+    def _detect_statement_type(text: str) -> Optional[str]:
+        upper_text = text.upper()
+        if "M-PESA STATEMENT" in upper_text:
+            return "M-Pesa Statement"
+        if "POCHI LA BIASHARA" in upper_text:
+            return "Pochi la Biashara Statement"
+        if "LIPA NA M-PESA" in upper_text:
+            return "Lipa na M-Pesa Statement"
+        return None
+
+
 pdf_parser = PDFParserService()

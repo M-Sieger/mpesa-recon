@@ -1,53 +1,82 @@
-# Roadmap – M-Recon (12-24 Monate)
+# Roadmap – M-Recon (6-Month + Long-Term)
 
-**Erstellt:** 21. Oktober 2025  
-**Version:** 1.0  
-**Zeitraum:** Post-MVP bis Product-Market-Fit Scale
-
----
-
-## Phasen-Übersicht
-
-| Phase | Zeitraum | Hauptziel | Target-Nutzer |
-|-------|----------|-----------|---------------|
-| **Phase 1: MVP** | Monat 0-3 | Validierung | 100+ aktive Nutzer |
-| **Phase 2: PMF** | Monat 4-6 | Product-Market-Fit | 1.000 zahlende Nutzer |
-| **Phase 3: Scale** | Monat 7-12 | Skalierung | 17.500 zahlende Nutzer |
-| **Phase 4: Expansion** | Monat 13-24 | Markt-Expansion | 50.000+ zahlende Nutzer |
+**Created:** 21. Oktober 2024  
+**Updated:** 13. Januar 2025  
+**Version:** 2.0 (Strategic Pivot)  
+**Timeline:** Jan 2025 - Dec 2025
 
 ---
 
-## Phase 2: Product-Market-Fit (Monat 4-6)
+## Overview
 
-### Ziel
-Von 100 auf 1.000 zahlende Nutzer durch Feature-Verbesserung + organische Kanäle
+**Mission:** Scale from 0 to 10,000 users via SACCO partnerships, achieve KES 5M ARR (break-even), secure seed funding.
 
-### Schlüssel-Initiativen
+**Phases:**
+- **Phase 0:** Validation (Jan 13-27) - Prove SACCO interest + PDF parsing
+- **Phase 1:** MVP Build (Feb-Mar) - Build product
+- **Phase 2:** Pilot Launch (Apr-Jun) - 3 SACCOs, 1,500 users
+- **Phase 3:** Scale (Jul-Dec) - 10 SACCOs, 10,000 users
+- **Phase 4:** Expansion (2026+) - Regional expansion, new products
 
-#### 2.1 Automatische eTIMS-Integration
-**Problem:** Manuelle CSV-Export-Eingabe ist Reibung  
-**Lösung:** Direkte API-Integration mit KRA eTIMS (VSCU)
+---
+
+## PHASE 0: VALIDATION (Jan 13-27, 2025) ← CURRENT
+
+**Goal:** Validate Product-Market Fit assumptions
 
 **Deliverables:**
-- [ ] KRA VSCU-API Integration (Backend)
-- [ ] OAuth-Flow für eTIMS-Autorisierung (User erlaubt App Zugriff)
-- [ ] Automatische Ausgaben-Submission (1-Klick)
-- [ ] Positionierung als **Premium-Feature** (KSh 1.200/Monat)
+- [ ] 2+ SACCO partnerships (verbal LOIs)
+- [ ] PDF parsing PoC: 90%+ accuracy on 20 real PDFs
+- [ ] 100+ waitlist signups
+- [ ] 60%+ WTP at KES 500/mo (10 customer interviews)
 
-**Timeline:** Monat 4-5 (8 Wochen)  
-**Impact:** Konversion Standard → Premium +30%
+**Decision Gate (Jan 27):**
+- ✅ GO: Start MVP build if all criteria met
+- ⚠️ PIVOT: Adjust strategy if weak signals
+- ❌ STOP: Reconsider if no validation
+
+**Timeline:** 2 weeks  
+**Budget:** $500
+
+→ See [`MVP-PLAN.md`](./MVP-PLAN.md) for detailed week-by-week plan
 
 ---
 
-#### 2.2 Smart-Kategorisierung (ML-basiert)
-**Problem:** Manuelle Kategorisierung ist zeitaufwändig  
-**Lösung:** ML-Modell lernt von User-Kategorisierungen
+## PHASE 1: MVP BUILD (Feb 1 - Mar 31, 2025)
 
-**Deliverables:**
-- [ ] Training-Dataset aus ersten 1.000 Nutzern (anonymisiert)
-- [ ] Simple Classifier (scikit-learn Random Forest)
-- [ ] 80%+ Genauigkeit bei Top-5-Kategorien
-- [ ] Auto-Suggest UI ("Wir schlagen vor: Miete")
+**Goal:** Ship working product: Backend + Web + Mobile
+
+**Timeline:** 8 weeks  
+**Budget:** $10K
+
+→ See [`MVP-PLAN.md`](./MVP-PLAN.md) Phase 1 section for full details
+
+---
+
+## PHASE 2: PILOT LAUNCH (Apr 1 - Jun 30, 2025)
+
+**Goal:** Launch 3 SACCO pilots, validate loan-access value prop
+
+**Target:** 1,500 active users across 3 SACCOs  
+**Timeline:** 3 months  
+**Budget:** $2.7K
+
+→ See [`MVP-PLAN.md`](./MVP-PLAN.md) Phase 2 section for full details
+
+---
+
+## PHASE 3: SCALE (Jul 1 - Dec 31, 2025)
+
+**Goal:** Scale to 10 SACCOs, 10,000 users, achieve break-even
+
+### Q3 2025 (Jul-Sep): Expand SACCO Partnerships
+
+**Target:**
+- 7 more SACCOs (total: 10)
+- 5,000 users (halfway to 10K)
+- KES 2.5M ARR
+
+**New Features (Differentiators):**
 
 **Timeline:** Monat 5-6 (4 Wochen)  
 **Impact:** Time-to-Value -40%, Retention +15%

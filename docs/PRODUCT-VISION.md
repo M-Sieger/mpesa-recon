@@ -1,288 +1,356 @@
 # Product Vision – M-Recon
 
-**Erstellt:** 21. Oktober 2025  
-**Version:** 1.0  
-**Projekt:** M-Recon (M-Pesa Reconciliation & Compliance)
+**Erstellt:** 21. Oktober 2024  
+**Aktualisiert:** 13. Januar 2025  
+**Version:** 2.0 (Strategic Pivot)  
+**Projekt:** M-Recon (M-Pesa Reconciliation for Loan Access)
 
 ---
 
 ## Problem Statement
 
-Kenianische kleine und mittlere Unternehmen (KMU) stehen vor einer doppelten Herausforderung:
+**Primary Problem: Loan Rejection Due to Missing Financial Documentation**
 
-1. **Manuelle M-Pesa-Abstimmung:** Mit 35,82 Millionen aktiven M-Pesa-Nutzern wickeln KMU täglich hunderte Transaktionen ab. Die manuelle Übertragung dieser Transaktionen aus PDF-Kontoauszügen oder SMS-Benachrichtigungen in Geschäftsbücher oder Tabellenkalkulationen ist **extrem zeitaufwändig (mehrere Stunden pro Woche)**, **fehleranfällig** (Tippfehler, ausgelassene Transaktionen) und **nicht skalierbar**.
+Kenianische informelle SMEs stehen vor einer existenziellen Herausforderung:
 
-2. **eTIMS-Compliance-Druck:** Das neue Mandat der Kenya Revenue Authority (KRA) verlangt, dass **alle** Unternehmen – einschließlich nicht-MwSt-registrierter und informeller Betriebe – ihre Betriebsausgaben mit eTIMS-konformen Rechnungen belegen müssen, um sie steuerlich geltend zu machen. Ohne digitale Buchführung drohen höhere Steuern und Bußgelder.
+1. **29% Loan Rejection Rate:** ~400.000 MSME-Kreditanträge/Jahr werden abgelehnt wegen "insufficient documentation" oder "incomplete financial records". Diese Unternehmer haben oft jahrelange M-Pesa-Historie, aber keine formalen Bücher.
+
+2. **Informal Sector Lock-Out:** 80,8% der 7,4M kenianischen SMEs sind informell. Sie haben:
+   - Keine Geschäftskonten (nur persönliche M-Pesa)
+   - Keine Buchhaltungssoftware (Excel, wenn überhaupt)
+   - Keine historischen Financial Statements
+   - **ABER:** Vollständige M-Pesa-Transaktionshistorie (digital, verifizierbar)
+
+3. **SACCOs Demand Better Documentation:** 357 deposit-taking SACCOs (3,3M members, KES 720B deposits) berichten, dass fehlende Financial Records der Hauptgrund für Kreditablehnungen sind. Aktuell verlangen sie:
+   - 6-12 Monate Bankkontoauszüge (die die meisten nicht haben)
+   - Business Financial Statements (die niemand erstellt)
+   - **Alternative:** M-Pesa-Statements werden akzeptiert, aber manuell geprüft (zeitaufwändig für SACCOs)
 
 **Konsequenzen:**
-- Ungenaue Finanzaufzeichnungen behindern strategische Entscheidungen
-- Fehlende formale Aufzeichnungen verhindern Zugang zu Bankkrediten
-- Manuelle Abstimmung bindet wertvolle Zeit, die in das Geschäftswachstum investiert werden könnte
-- Nicht-Compliance mit eTIMS führt zu direkten finanziellen Verlusten (höhere Steuerlast)
+- SMEs bleiben im "Missing Middle" trapped: Zu groß für Mikrokredite, zu klein/informell für Bankkredite
+- KES 20B/Jahr an potenziellem Kreditvolumen bleibt ungenutzt
+- Informelle Unternehmer zahlen 10-20% Zinsen bei Shylocks statt 12-15% bei SACCOs
+- Mangelhafte Finanzplanung durch fehlende Transparenz über Cashflow
+
+**Secondary Problem (Time Waste, aber nicht Hauptschmerz):**
+- Manuelle M-Pesa-Abstimmung kostet 2-3h/Woche
+- eTIMS-Compliance-Druck (aber weniger akut als Kreditzugang)
 
 ---
 
 ## Target Audience
 
 ### Primäre Zielgruppe (MVP)
-**Segment:** Kenianische KMU (KKMU – Kleinst-, Klein- und Mittelunternehmen)
+**Segment:** Informelle SME-Besitzer (Jua Kali, Mama Mboga, Dukas) via SACCO-Partnerships
 
 **Charakteristika:**
-- **Größe:** 1-10 Mitarbeiter
-- **Sektor:** Einzelhandel, Dienstleistungen, Handwerk, Food & Beverage, Handwerker
-- **Transaktionsvolumen:** 50-500 M-Pesa-Transaktionen pro Monat
-- **Digitale Kompetenz:** Mittel (nutzen Smartphones, WhatsApp, M-Pesa täglich)
-- **Geographie:** Städtisch und stadtnahe Gebiete (Nairobi, Mombasa, Kisumu, Nakuru)
-- **Lizenzstatus:** Mix aus lizenzierten (1,56 Mio.) und nicht-lizenzierten (5,85 Mio.) Unternehmen
+- **Größe:** 1-5 Mitarbeiter (Ein-Personen-Betriebe bis Mikrounternehmen)
+- **Sektor:** Einzelhandel, Food & Beverage, Handwerk, Dienstleistungen
+- **Transaktionsvolumen:** 100-1000 M-Pesa-Transaktionen/Monat
+- **Digitale Kompetenz:** Basic (nutzen M-Pesa täglich, WhatsApp, aber keine Buchhaltungssoftware)
+- **Geographie:** Nairobi, Mombasa, Kisumu, Nakuru (urban/peri-urban)
+- **Finanzstatus:** 
+  - SACCO-Mitglied ODER erwägt Beitritt
+  - Hat M-Pesa-Konto (persönlich, manchmal Paybill/Till)
+  - Kein Geschäftskonto bei Bank
+  - Braucht KES 50K-150K Business Loan
+
+**Pain Hierarchy:**
+1. **Kreditzugang** (existenzielles Problem) ← HAUPTFOKUS
+2. Cashflow-Transparenz (nice-to-have)
+3. eTIMS-Compliance (zukünftiges Problem)
+4. Zeit sparen bei Buchhaltung (Bonus)
 
 **Nutzungskontext:**
-- **Wo:** Im Laden/Büro, unterwegs (bei Lieferanten/Kunden)
-- **Wann:** Abends nach Geschäftsschluss, Wochenende (wenn Zeit für Buchhaltung ist)
-- **Gerät:** Android-Smartphone (80,8% Smartphone-Penetration, Android-Dominanz)
-- **Konnektivität:** Oft unzuverlässig oder kostspielig → **Offline-First zwingend**
+- **Wo:** Im Laden/Büro, zu Hause (PDF auf Handy gespeichert)
+- **Wann:** Wenn Kreditantrag ansteht ODER monatlich für Übersicht
+- **Gerät:** Android-Smartphone (Budget-Phones: Samsung Galaxy A-Serie, Tecno, Infinix)
+- **Konnektivität:** Unzuverlässig → **Offline-First absolut kritisch**
 
 ### Sekundäre Zielgruppe (Post-MVP)
-**Frauengeführte KMU (40% des Marktes):**
-- Überproportional stark von fehlenden formalisierten Finanzaufzeichnungen betroffen
-- Benötigen saubere Aufzeichnungen für Zugang zu Mikrokrediten (z.B. Women Enterprise Fund)
-- Konzentriert in Sektoren mit hohem Transaktionsvolumen (Einzelhandel, Food)
+**Frauengeführte SMEs (40% des Marktes) via Women Enterprise Fund:**
+- Noch stärker von Kreditbarrieren betroffen (Gender Bias bei Kreditvergabe)
+- WEF verlangt Bankkonten (Partnership-Opportunity: "Wir helfen bei Kontoeröffnung")
+- Konzentriert in High-Transaction-Sektoren (Retail, Food → mehr M-Pesa-Daten)
 
-**Kooperationspartner:**
-- Women Enterprise Fund (WEF) – zur Unterstützung von Kreditvergabe-Prozessen
-- KMU-Verbände und Genossenschaften
-- Mikrofinanzinstitutionen
+**SACCO-Mitglieder (Primary Channel, B2B2C):**
+- 3,3M Mitglieder in deposit-taking SACCOs
+- 70,6% Digital Adoption (bereits an mobile channels gewöhnt)
+- SACCOs haben Incentive, Kreditvergabe zu verbessern (mehr Zinseinkommen)
 
 ---
 
 ## Vision Statement
 
-**M-Recon macht M-Pesa-Transaktionen für kenianische KMU sofort verwertbar, indem es mühsame manuelle Abstimmung automatisiert und eTIMS-Compliance mit einem Klick ermöglicht – damit Unternehmer Zeit und Geld sparen und den Zugang zu Krediten erhalten.**
+**M-Recon macht Kreditzugang für informelle kenianische SMEs möglich, indem es ihre M-Pesa-Historie in SACCO/Bank-ready Financial Reports verwandelt – damit hunderttausende Unternehmer das Kapital bekommen, das sie zum Wachsen brauchen.**
 
-**In 3 Jahren:** Die führende Finanz-Compliance- und Abstimmungslösung für 100.000+ KMU in Ostafrika, die als vertrauenswürdiger Partner für Banken, Mikrofinanzinstitutionen und Steuerbehörden gilt.
+**In 3 Jahren:** 
+- **100.000+ SMEs** haben erfolgreiche Kreditanträge mit M-Recon gestellt
+- **50+ SACCO-Partnerships** (representing 500K+ members)
+- **Established Category:** "M-Pesa Financial Records" als akzeptierter Standard für Loan Applications
+- **Market Leader:** in PDF-based bookkeeping for informal sector in East Africa
 
 ---
 
-## MVP User Stories (Must-Have)
+## MVP User Stories (Must-Have) - LOAN-ACCESS FOKUS
 
-### User Story 1: M-Pesa-Kontoauszug hochladen und parsen
-**Als** KMU-Besitzer  
-**möchte ich** meinen M-Pesa-PDF-Kontoauszug oder CSV-Export mit einem Klick hochladen  
-**damit** alle Transaktionen automatisch extrahiert und in einer übersichtlichen Tabelle angezeigt werden.
+### User Story 1: M-Pesa-PDF hochladen und entschlüsseln
+**Als** informeller SME-Besitzer  
+**möchte ich** meinen passwort-geschützten M-Pesa-PDF-Statement mit meiner ID Number hochladen  
+**damit** die App alle Transaktionen automatisch ausliest.
 
 **Acceptance Criteria:**
-- [ ] Upload-Interface für PDF- und CSV-Dateien (max. 10 MB)
-- [ ] Parsing-Erfolgsrate >98% für Standard-M-Pesa-Kontoauszüge
-- [ ] Extrahierte Felder: Datum, Uhrzeit, Transaktions-ID, Details (Zahler/Empfänger), Betrag
-- [ ] Fehlermeldung bei unbekanntem Format mit Support-Kontakt
-- [ ] Offline-Upload möglich (Sync bei nächster Online-Verbindung)
+- [ ] Upload-Interface für PDF-Dateien (max. 10 MB)
+- [ ] Password-Handling: User gibt ID Number ein → App entschlüsselt PDF
+- [ ] Parsing-Erfolgsrate >90% für Standard-M-Pesa-Statements (Personal, Business, Pochi)
+- [ ] Extrahierte Felder: Datum, Transaktions-ID, Details (Zahler/Empfänger), Paid In, Withdrawn, Balance
+- [ ] Offline-Upload möglich (Verarbeitung lokal, Sync bei Online-Verbindung)
+- [ ] Fehlermeldung bei Parsing-Fehler mit Manual-Entry-Option
 
-### User Story 2: Transaktionen kategorisieren
-**Als** KMU-Besitzer  
-**möchte ich** jede Transaktion einer Kategorie zuordnen (Verkäufe, Miete, Lieferanten, Gehälter, etc.)  
-**damit** ich sehe, wofür mein Geld ausgegeben wird und meine Steuererklärung vorbereiten kann.
+**Why This Matters for Loan Access:**
+→ SACCOs/Banks akzeptieren M-Pesa-Statements, aber manuelles Review kostet Zeit. Automatische Extraktion beschleunigt Approval-Prozess.
 
-**Acceptance Criteria:**
-- [ ] Vordefinierte Kategorien: Verkäufe, Einkäufe, Miete, Gehälter, Transport, Steuern, Sonstiges
-- [ ] Bulk-Kategorisierung: Alle Transaktionen von "Safaricom Airtime" → "Betriebsausgaben"
-- [ ] Eigene Kategorien erstellen und speichern
-- [ ] Smart-Suggestions: App schlägt Kategorien basierend auf Transaktionsdetails vor
-- [ ] Notizen pro Transaktion hinzufügen (z.B. "Mehl für Bäckerei")
-
-### User Story 3: eTIMS-konformen Bericht exportieren
-**Als** KMU-Besitzer  
-**möchte ich** einen übersichtlichen Bericht meiner kategorisierten Ausgaben als CSV oder PDF exportieren  
-**damit** ich diese Daten für meine eTIMS-Einreichung bei der KRA nutzen kann.
+### User Story 2: Transaktionen kategorisieren (Income vs Expense)
+**Als** SME-Besitzer  
+**möchte ich** sehen, welche Transaktionen Einnahmen (Verkäufe) vs. Ausgaben (Lieferanten, Miete) sind  
+**damit** ich meinem SACCO zeigen kann, dass mein Business profitabel ist.
 
 **Acceptance Criteria:**
-- [ ] Export als CSV (für manuelle eTIMS-Eingabe)
-- [ ] Export als PDF-Zusammenfassung (Gesamt-Einnahmen, Gesamt-Ausgaben pro Kategorie)
-- [ ] Zeitraum-Filter: Monat, Quartal, Jahr, Custom-Range
-- [ ] Offline-Funktion: Report wird lokal generiert, kein Internet erforderlich
-- [ ] Report enthält KRA-konforme Formatierung (Hinweis auf eTIMS-Anforderungen)
+- [ ] Vordefinierte Kategorien: **Income** (Verkäufe, Kundeneinnahmen) vs **Expenses** (Einkäufe, Miete, Gehälter, Transport)
+- [ ] Smart-Suggestions: "M-Changa contribution" → Expense, "Received from John Doe" → Income
+- [ ] Bulk-Kategorisierung: Alle Transaktionen von "ABC Suppliers" → Expense
+- [ ] Manual Override: User kann Kategorien korrigieren
+- [ ] Notizen pro Transaktion (z.B. "Payment for 50kg maize")
+
+**Why This Matters for Loan Access:**
+→ SACCOs brauchen Income/Expense Split, um Debt-Service-Coverage zu kalkulieren (Kann Unternehmer den Loan zurückzahlen?).
+
+### User Story 3: Financial Summary Report exportieren (Loan-Ready)
+**Als** SME-Besitzer  
+**möchte ich** einen professionellen Financial Report (6-12 Monate) exportieren  
+**damit** ich ihn meinem SACCO/Bank mit Kreditantrag vorlege.
+
+**Acceptance Criteria:**
+- [ ] Export als PDF: **"M-Recon Certified Financial Summary"**
+  - Total Income (6/12 months)
+  - Total Expenses (breakdown by category)
+  - Average Monthly Profit
+  - Transaction Count (zeigt Business-Activity)
+  - "Verified by M-Recon (PDF parsing accuracy: 95%)"
+- [ ] Export als CSV (für manuelle eTIMS-Eingabe später)
+- [ ] Zeitraum-Filter: 6 Monate (Standard für SACCOs), 12 Monate, Custom
+- [ ] Offline-Funktion: Report wird lokal generiert
+- [ ] WhatsApp-Share-Button (direkt an SACCO Loan Officer senden)
+
+**Why This Matters for Loan Access:**
+→ Dies ist das Kernprodukt. SACCOs akzeptieren diese Reports als Ersatz für Bankkontoauszüge. "Loan-Ready Badge" signalisiert Qualität.
+
+---
+---
+
+## Deferred User Stories (Phase 2-3, Month 4+)
+
+### User Story 4: eTIMS API Integration (Phase 2)
+**Als** SME-Besitzer  
+**möchte ich** meine kategorisierten Ausgaben automatisch zu eTIMS hochladen  
+**damit** ich Tax-Compliant bin ohne manuelle Dateneingabe.
+
+**Why Deferred:** 
+- eTIMS API-Integration ist komplex (KRA VSCU API, OAuth)
+- MVP-Fokus ist Loan-Access, nicht Tax-Compliance
+- Manuelle CSV-Export genügt für frühe Adopter
+- Wird Premium-Feature in Phase 2 (Differentiator vs Pay Hero)
+
+### User Story 5: Bank Statement Support (Phase 3)
+**Als** fortgeschrittener User  
+**möchte ich** auch KCB/Equity-Statements hochladen  
+**damit** ich ein vollständiges Financial Picture habe (M-Pesa + Bank).
+
+**Why Deferred:** 
+- MVP fokussiert auf Informal Sector (die haben keine Bankkonten)
+- Bank-Statement-Parsing braucht eigene Parser (verschiedene Formate)
+- Erst relevant wenn 10K+ users (dann lohnt sich Investment)
 
 ---
 
-## Success Metrics (MVP – erste 90 Tage)
+## Success Metrics - LOAN-ACCESS FOKUS
 
-### Validierungsphase (Sprint 1: Tag 1-30)
-- [ ] **20 Beta-Nutzer** rekrutiert
-- [ ] **>80% Aktivierungsrate** (Beta-Nutzer laden mind. 1 Statement hoch)
-- [ ] **>95% Parsing-Erfolgsrate** bei Beta-User-Statements
-- [ ] **Net Promoter Score (NPS) >40**
+### Validation Phase (Jan 13-27, 2025) ← CURRENT
+- [ ] **2+ SACCO partnerships** (signed LOIs)
+- [ ] **100+ waitlist signups**
+- [ ] **PDF parsing PoC:** 90%+ accuracy on 20 real PDFs
+- [ ] **10 customer interviews:** 60%+ WTP at KES 500/mo
 
-### Akquisitionsphase (Sprint 2: Tag 31-60)
-- [ ] **100+ wöchentlich aktive Nutzer (WAU)**
-- [ ] **Cost Per Install (CPI) <$2,00**
-- [ ] **Install-to-Signup-Rate >30%**
-- [ ] **Customer Acquisition Cost (CAC) <$15** (aus bezahlten Kanälen)
+### MVP Phase (Feb-Mar 2025)
+- [ ] **1,500 active users** (via 3 SACCO pilots)
+- [ ] **50%+ adoption** within pilot groups
+- [ ] **90%+ parsing accuracy** (production)
+- [ ] **15-20% loan approval uplift** (measured vs control group)
+- [ ] **<10% monthly churn**
+- [ ] **NPS >4**
 
-### Monetarisierungsphase (Sprint 3: Tag 61-90)
-- [ ] **>2% Free-to-Paid-Konversion**
-- [ ] **Monatlich wiederkehrender Umsatz (MRR) >$500**
-- [ ] **1 Partnerschafts-MOU unterzeichnet** (WEF oder KMU-Verband)
+### Scale Phase (Apr-Dec 2025)
+- [ ] **10,000 active users** (10 SACCOs)
+- [ ] **KES 5M ARR** (break-even)
+- [ ] **25% of users** report successful loan application with M-Recon report
+- [ ] **Seed funding closed:** USD 250-500K
+- [ ] **eTIMS integration live** (differentiator)
 
-### Geschäftsziele (Jahr 1)
-- [ ] **17.500 zahlende Nutzer** (0,5% des SAM von 3,5 Mio. KMU)
-- [ ] **LTV:CAC-Ratio von 3,5:1**
-- [ ] **Churn-Rate <30% jährlich**
-
----
-
-## Tech-Stack (Vorgeschlagen)
-
-### Frontend (Mobile)
-- **Plattform (MVP):** Native Android App (Kotlin + Jetpack Compose)
-- **Architecture:** Clean Architecture mit MVVM
-- **Key Libraries:**
-  - **Jetpack Compose:** Moderne deklarative UI
-  - **Room:** Lokale SQLite-Datenbank
-  - **WorkManager:** Background-Synchronisation
-  - **Hilt:** Dependency Injection
-  - **Retrofit:** API-Calls zum Backend
-  - **Coil:** Image Loading
-  - **DataStore:** App-Preferences
-- **Begründung:** 
-  - Android dominiert kenianischen Markt (80,8% Penetration)
-  - Native Performance für finanzielle Anwendungen (Sicherheit, Reaktionsfähigkeit)
-  - Beste Offline-Fähigkeiten (Room DB + WorkManager)
-  - Zukunftssichere SMS-Parsing-Integration (READ_SMS-Permission)
-  - Material 3 Design für moderne, intuitive UX
-
-### Frontend (Post-MVP)
-- **Plattform (6-12 Monate):** Progressive Web App (PWA)
-- **Tech-Stack:** React + Vite + TypeScript
-- **Begründung:**
-  - Kosteneffiziente Erweiterung auf iOS & Desktop ohne separate native App
-  - Service Worker für Offline-Funktionalität
-  - Einfache Updates ohne App-Store-Review
-- **Note:** Aktueller React-Prototype dient als Proof-of-Concept für PWA-Phase
-
-### Backend
-- **Framework:** Python 3.11+ mit FastAPI
-- **Begründung:**
-  - Python ist ideal für Document-Parsing (Kreuzberg, Unstructured Libs)
-  - FastAPI: Modern, schnell, automatische OpenAPI-Docs, async-Support
-  - Große Community für ML-Features (zukünftige Smart-Categorization)
-
-### Document Parsing
-- **Library:** Kreuzberg / Unstructured (Python)
-- **Erfolgsrate:** >97-100% laut Benchmarks für strukturierte PDF-Dokumente
-- **Fallback:** Manuelle Korrektur-UI für Edge-Cases (<2%)
-
-### Datenbank
-- **Lokal (Mobile):** SQLite via Room (Android)
-- **Backend:** PostgreSQL 16
-- **Begründung:**
-  - SQLite: Leichtgewichtig, perfekt für Offline-First
-  - PostgreSQL: Robust, JSONB-Support für flexible Schemas, bewährt für SaaS
-
-### State Management (Android)
-- **Lösung:** Jetpack ViewModel + StateFlow + Compose State
-- **Architecture Pattern:** MVVM (Model-View-ViewModel)
-- **Data Flow:**
-  - **UI Layer:** Composables observieren ViewModels via StateFlow
-  - **Domain Layer:** Use Cases orchestrieren Business-Logik
-  - **Data Layer:** Repositories abstrahieren Datenquellen (Local Room DB + Remote API)
-- **Begründung:**
-  - Native Android-Solution, kein zusätzliches Framework nötig
-  - Lifecycle-aware, verhindert Memory-Leaks
-  - Reaktives Pattern mit Kotlin-Coroutines
-  - Klare Separation of Concerns (Testability)
-
-### Testing
-- **Unit-Tests:** JUnit 5 (Android), pytest (Backend)
-- **UI-Tests:** Espresso (Android), Maestro (Cross-Platform E2E als Alternative)
-- **Backend-Tests:** pytest + httpx (FastAPI-Testing-Client)
-- **Coverage-Ziel:** >70% für kritische Pfade (Parsing, Kategorisierung, Export)
-
-### CI/CD
-- **Platform:** GitHub Actions
-- **Pipeline:**
-  - **On Push:** Lint (ktlint/flake8), Unit-Tests, Type-Check
-  - **On PR:** Integration-Tests, E2E-Tests (kritische User-Flows)
-  - **On Merge to main:** Automatisches Deployment zu Staging (Railway/Render für Backend, Google Play Internal Track für Android)
-  - **On Git Tag (v1.x.x):** Production-Deployment (manuell getriggert)
-
-### Authentication & Security
-- **Auth:** JWT-basiert (Access-Token 15 Min + Refresh-Token 7 Tage in HttpOnly-Cookie)
-- **Verschlüsselung:** SQLCipher für lokale Datenbank-Verschlüsselung (Android)
-- **API-Security:** Rate-Limiting (FastAPI-Limiter), Input-Validation (Pydantic)
-
-### Payment Integration (Post-MVP Sprint 3)
-- **PSP-Partner:** Pesapal
-- **Begründung:**
-  - Etablierte API-Dokumentation
-  - Fokus auf KMU-Markt (8.000+ Händler)
-  - Unterstützt M-Pesa, Kreditkarten, Bank-Transfers
-  - Niedrigere Transaktionskosten als Alternativen
+### North Star Metric
+**"Number of SMEs who successfully obtained loans using M-Recon reports"**
+- Target Year 1: 2,500 successful loan applications (25% conversion from 10K users)
+- Proxy metric (before we can track full cycle): "Reports exported and shared via WhatsApp"
 
 ---
 
-## Non-Functional Requirements
+## Tech Stack - PDF-FIRST, OFFLINE-FIRST
 
-### Performance
-- **Mobile App:**
-  - App-Start: <2s (Cold Start), <0,5s (Hot Start)
-  - PDF-Parsing: <5s für 100-Transaktionen-Statement
-  - Export-Generierung: <3s für 1000 Transaktionen
-- **Backend API:**
-  - Response Time: <200ms (p95) für Standard-Requests
-  - Parsing-Endpoint: <10s für 10MB PDF
+### MVP (Phase 1: Feb-Mar 2025)
 
-### Security
-- **Authentifizierung:** JWT mit automatischem Token-Refresh
-- **Datenverschlüsselung:**
-  - In-Transit: HTTPS/TLS 1.3
-  - At-Rest: SQLCipher (Mobile), PostgreSQL Encryption (Backend)
-- **Input-Validation:** Alle API-Inputs via Pydantic-Models validiert
-- **File-Upload-Security:** 
-  - Max. File-Size: 10 MB
-  - Allowed Formats: PDF, CSV (MIME-Type-Validation)
-  - Virus-Scanning (ClamAV) vor Parsing (Post-MVP)
+#### Backend
+- **Framework:** FastAPI (Python 3.11+)
+- **Database:** Supabase (PostgreSQL + Auth + Storage)
+- **PDF Parsing:** PDFPlumber + custom regex patterns
+- **Authentication:** Supabase Auth (email/phone)
+- **File Storage:** Supabase Storage (encrypted PDFs)
+- **Deployment:** Railway.app or Fly.io (pay-as-you-grow)
 
-### Accessibility
-- **Standard:** WCAG 2.2 AA (Web-Komponenten)
-- **Mobile:** 
-  - TalkBack-Kompatibilität (Android Screen Reader)
-  - Mindest-Touch-Target-Größe: 48x48 dp
-  - Farbkontrast: ≥4,5:1 für Text
-  - Keyboard-Navigation (für externe Keyboards)
+**Why This Stack:**
+- FastAPI: Fast development, auto-docs, async support
+- Supabase: Reduces backend complexity (auth, storage, DB in one)
+- PDFPlumber: Proven for M-Pesa PDF parsing (80-95% accuracy expected)
+- Railway: Simple deployment, scales easily, Kenya-accessible
 
-### Browser-/OS-Support
-- **Android:** Android 10+ (API 29+) – deckt 85%+ des kenianischen Marktes ab
-- **PWA (Post-MVP):** 
-  - Chrome/Firefox/Safari/Edge (letzte 2 Versionen)
-  - iOS 15.4+ (für PWA-Installation)
+#### Frontend (Web)
+- **Framework:** React 18 + TypeScript
+- **Styling:** Tailwind CSS (fast iteration)
+- **State Management:** Zustand (lightweight)
+- **Build Tool:** Vite (fast dev server)
+- **Deployment:** Vercel (global CDN, Kenya-optimized)
 
-### Offline-Funktionalität
-- **Critical:** App MUSS offline voll funktionsfähig sein (kein Internet = kein Dealbreaker)
-- **Lokal gespeichert:** Letzte 180 Tage Transaktionsdaten (ca. 1.000-5.000 Transaktionen)
-- **Sync-Strategie:**
-  - Pull-Sync beim App-Start (wenn Online)
-  - Push-Sync mit exponentieller Backoff-Strategie bei fehlgeschlagenen Versuchen
-  - Konfliktlösung: "Last-Write-Wins" (basierend auf Timestamp)
-- **Speicherlimit:** Max. 50 MB lokale Datenbank (automatische Bereinigung älterer Daten)
+**Purpose:** Waitlist page + Admin dashboard + Beta testing (web-first for speed)
 
-### Reliability & Availability
-- **Backend-Uptime:** >99,5% (max. 3,65 Stunden Downtime/Monat)
-- **Error-Handling:**
-  - Graceful Degradation bei Backend-Ausfall (App zeigt lokale Daten)
-  - Retry-Mechanismus für kritische API-Calls (z.B. Statement-Upload)
-  - User-Friendly Error-Messages (keine Tech-Jargon)
+#### Mobile (Android)
+- **Framework:** React Native + Expo (faster iteration than native Kotlin)
+- **Offline Storage:** SQLite (via expo-sqlite)
+- **Background Sync:** Expo Task Manager
+- **PDF Handling:** react-native-pdf + expo-file-system
+
+**Why React Native:**
+- Faster MVP development (shared codebase with web)
+- Expo simplifies offline-first architecture
+- Easy to pivot to native if needed (eject from Expo)
+- Good enough performance for CRUD app (not gaming)
+
+**Why NOT Native Kotlin (originally planned):**
+- 8-week timeline too tight for native development
+- React Native gets us 80% of benefits with 50% of time
+- Can always go native in Phase 2 if performance issues
+
+### Post-MVP (Phase 2-3: Apr-Dec 2025)
+
+#### eTIMS Integration
+- **API:** KRA VSCU API (OAuth 2.0)
+- **Storage:** Encrypted eTIMS credentials in Supabase
+- **Sync:** Background job (checks for new transactions, auto-submits)
+
+#### ML Categorization
+- **Model:** scikit-learn Random Forest (simple, interpretable)
+- **Training Data:** Anonymized user categorizations (opt-in)
+- **Deployment:** FastAPI endpoint (inference)
+
+#### USSD Version
+- **Platform:** Africa's Talking USSD API
+- **Use Case:** Ultra-low-data users (feature phones)
+- **Limitation:** Text-only interface, no PDF upload (SMS parsing instead)
+
+---
+## Competitive Positioning - SACCO-PARTNERSHIP MOAT
+
+### Direct Competitors
+**Pay Hero (Main Competitor):**
+- **Strength:** API-first (Daraja integration), formal businesses focus, established brand
+- **Weakness:** Excludes informal sector (70%+ of market), NO loan-access positioning, NO SACCO partnerships
+- **Our Advantage:** PDF-first (inclusive), Offline-first, Loan-access focus, SACCO network effects
+
+### Indirect Competitors
+- **Excel/Manual Books:** Free but time-consuming, no loan-ready reports
+- **Local Accountants:** KES 5K-10K/month, not accessible to informal SMEs
+- **Branch/Tala:** Offer loans but don't solve documentation problem
+
+### White Space (Our Opportunity)
+**Offline + PDF + Loan-Access + SACCO Partnerships = NOBODY**
+
+### Defensibility (Moat)
+1. **SACCO Network Effects:** 5 SACCOs × 10K members = 50K users → Hard to switch
+2. **Data Moat:** 25K+ parsed statements → ML training data for categorization
+3. **Partnership Lock-In:** SACCOs won't switch easily (integration costs)
+4. **Brand:** "M-Recon Certified Reports" become trusted standard for loan applications
 
 ---
 
-## Out-of-Scope (Nicht-MVP)
+## GTM Strategy - B2B2C via SACCOs
 
-### Für MVP NICHT enthalten (aber Post-MVP-Roadmap):
-- [ ] **Automatische eTIMS-API-Integration:** MVP nutzt manuellen Export → Auto-Submission kommt in Phase 2
-- [ ] **SMS-Parsing:** Automatisches Parsen von M-Pesa-SMS-Benachrichtigungen (erfordert READ_SMS-Permission + komplexere UX)
-- [ ] **Multi-User-Zugang:** MVP ist Single-User pro Konto (Team-Features für Enterprise-Tier später)
-- [ ] **Bankkonto-Integration:** Nur M-Pesa im MVP (keine Bank-Statement-Integration)
-- [ ] **Erweiterte Analysen:** KI-basierte Ausgaben-Prognosen, Cashflow-Forecasting (erfordert Datenbasis)
-- [ ] **Multi-Currency-Support:** MVP ist KSh-only (USD/EUR-Support für internationale Transaktionen später)
-- [ ] **iOS Native App:** PWA deckt iOS ab (native App nur bei signifikantem iOS-Marktanteil)
-- [ ] **Integration mit Buchhaltungssoftware:** Keine QuickBooks/Xero-Integration im MVP (API-Endpunkte für Export-Formate später)
+### Phase 1: SACCO Partnerships (70% of Users)
+**Target:** 5 pilot SACCOs in Q1-Q2 2025
+
+**Pitch to SACCOs:**
+- "Reduce member loan rejections by 25%"
+- "Increase loan portfolio (more interest income)"
+- "Differentiate from competitors (digital innovation)"
+- "Free for first 100 members, then KES 10K/month partnership fee"
+
+**Precedents:**
+- Kwara (SACCO digital platform): Doubled memberships in 1 year
+- Branch (credit scoring): SACCO partnerships proven model
+
+**Target SACCOs:**
+1. Kimisitu SACCO (Winner of Enterprise IT Adoption 2025)
+2. Finmat SACCO (AI/data analytics focus)
+3. Tower SACCO (Member empowerment)
+4. Police SACCO (M-Tawi success)
+5. Kenya Re SACCO (Bank statement requirements for loans)
+
+### Phase 2: Consumer Waitlist (20% - Validation)
+**Target:** 100+ signups in 30 days
+
+**Channels:**
+- Facebook groups (Kenya SME groups)
+- Grace's network (local validation)
+- Paid ads (Facebook, Google - low budget)
+
+### Phase 3: WEF Partnership (10% - Long-term)
+**Target:** 50-100 women's groups (500-1,000 women)
+
+**Challenge:** WEF requires bank accounts (barrier to entry)
+
+**Solution:** Partner with Postbank/Equity for easy account opening
+- M-Recon helps meet bank account documentation requirements
+- WEF members use M-Recon to maintain good financial records
+
+---
+
+## Business Model - B2B2C Freemium
+
+### Pricing
+**Free Tier:**
+- 50 transactions/month
+- Basic reports (PDF/CSV)
+- Manual categorization
+
+**Premium Tier: KES 500/month (USD ~$4)**
+- Unlimited transactions
+- Auto-categorization (ML-powered in Phase 2)
+- Priority support (WhatsApp)
+- "Loan-Ready Badge" on reports
+- Offline-first sync
+
+**SACCO Partnership Tier: KES 10K-25K/month**
+- Free for first 100 members
+- Then bulk discount (KES 300/user/month)
+- Co-branded reports
+- Dedicated support
+- API integration (future)
 
 ### Bewusste Design-Entscheidungen:
 - **Keine direkte M-Pesa-API-Integration:** File-Upload-basiert (keine API-Lizenz von Safaricom nötig, schneller Go-to-Market)
@@ -329,105 +397,188 @@ Electronic Tax Invoice Management System (eTIMS) der Kenya Revenue Authority (KR
 ## Go-to-Market-Strategie (Kurzfassung)
 
 ### Primäre Kanäle:
-1. **Digitale Werbung:** Facebook/Instagram (KMU-Gruppen), Google Ads (Keyword: "eTIMS compliance")
-2. **WhatsApp-Bot:** Onboarding + Support (niedrige Hemmschwelle, hohe Verbreitung in Kenia)
-3. **KMU-Verbände:** Partnerschaften für Co-Marketing (Women Enterprise Fund, KEPSA)
-4. **Content-Marketing:** Blog-Posts zu "eTIMS-Compliance für KMU", YouTube-Tutorials (Swahili/Englisch)
+### Revenue Projections (Year 1)
+**Optimistic Case (SACCO-Partnership Success):**
+- 10,000 users × KES 500/mo × 12 months = KES 60M (~USD $460K ARR)
+- 10 SACCOs × KES 15K/mo × 12 months = KES 1.8M (~USD $14K ARR)
+- **Total:** ~USD $475K ARR
 
-### Zielgruppen-spezifisch:
-- **Frauengeführte KMU:** Partnerschaft mit Women Enterprise Fund (WEF) für Pilotprogramm
-- **Sektoren:** Einzelhandel (Duka), Food (Hotels/Restaurants), Dienstleistungen (Salons, Autowerkstätten)
+**Realistic Case:**
+- 5,000 users × KES 500/mo × 12 months = KES 30M (~USD $230K ARR)
+- 5 SACCOs × KES 10K/mo × 12 months = KES 600K (~USD $4.6K ARR)
+- **Total:** ~USD $235K ARR
+
+**Break-Even Target:** 1,500 users (KES 9M ARR = USD ~$70K)
+
+### Unit Economics
+**LTV:CAC Ratio:** 41:1 (via SACCO partnerships)
+- LTV: KES 12,000 (KES 500/mo × 24 months avg. lifetime)
+- CAC: KES 300 (partnership-driven, low direct spend)
+
+**Payback Period:** <1 month (extremely fast ROI)
 
 ---
 
-## Architecture Decision Records (ADRs) – Preview
+## Non-Functional Requirements
 
-### ADR-001: Native Android statt Cross-Platform (Flutter/React Native)
-**Decision:** Native Android mit Kotlin + Jetpack Compose  
+### Performance
+- **Mobile App:**
+  - App Start: <2s (cold), <0.5s (warm)
+  - PDF Parsing: <5s for 100-transaction statement
+  - Report Generation: <3s for 1000 transactions
+  - Offline-first: 100% functionality without internet
+
+### Security
+- **Authentication:** Supabase Auth (email/phone OTP)
+- **Data Encryption:**
+  - In-Transit: HTTPS/TLS 1.3
+  - At-Rest: SQLite encryption (mobile), PostgreSQL encryption (backend)
+- **File Security:** 
+  - Max file size: 10MB
+  - Format validation: PDF only
+  - ID number verification for password-protected PDFs
+
+### Accessibility
+- **Mobile:** TalkBack compatibility, min 48x48dp touch targets, 4.5:1 color contrast
+- **Web:** WCAG 2.2 AA compliance
+
+### Offline-Functionality
+- **Critical:** App MUST work 100% offline (no internet = no dealbreaker)
+- **Local Storage:** Last 180 days of transactions (~50MB max)
+- **Sync Strategy:** Background sync when online, exponential backoff on failures
+
+---
+
+## Out-of-Scope (MVP - Deferred to Phase 2+)
+
+### NOT in MVP (but on Roadmap):
+- [ ] **eTIMS API Integration:** Manual CSV export for now → Auto-submission in Phase 2
+- [ ] **SMS Parsing:** READ_SMS permission + complex UX → Phase 3
+- [ ] **Multi-User Access:** Single-user only in MVP → Team features later
+- [ ] **Bank Statement Support:** M-Pesa only → Bank integration Phase 3
+- [ ] **AI Forecasting:** ML-based cashflow predictions → Phase 4
+- [ ] **Multi-Currency:** KES only → USD/EUR support if international demand
+- [ ] **iOS Native App:** React Native covers iOS → Native only if needed
+- [ ] **Accounting Software Integration:** QuickBooks/Xero APIs → Phase 4
+
+---
+
+## Key Market Research Findings
+
+### Problem Validation
+- **7.4M SMEs** in Kenya (80.8% informal)
+- **29% loan rejection rate** due to insufficient documentation (~400K applications/year)
+- **Average loan size:** KES 50K-150K for MSMEs
+- **Total addressable credit:** KES 20B/year locked due to documentation gap
+
+### SACCO Opportunity
+- **357 deposit-taking SACCOs** (SASRA-regulated)
+- **3.3M members**, KES 720B in deposits
+- **70.6% digital adoption** (mobile channels)
+- **Precedent:** Kwara doubled SACCO memberships in 1 year with digital platform
+
+### Competitor Gap
+- **Pay Hero:** API-first (excludes informal sector), NO loan-access focus, NO SACCO partnerships
+- **White Space:** Offline + PDF + Loan-Access + SACCO partnerships = **NOBODY**
+
+---
+
+## Architecture Decision Records (ADRs)
+
+### ADR-001: React Native vs Native Android
+**Decision:** React Native + Expo for MVP  
+**Status:** ✅ CHANGED (from original Native Kotlin plan)  
+**Date:** 2025-01-13
+
+**Reason:**
+- **8-week timeline:** Native Kotlin too slow for MVP (React Native 50% faster)
+- **Shared codebase:** Web + Mobile components reusable
+- **Offline-first:** Expo SQLite + Task Manager handles offline well
+- **Pivot flexibility:** Can eject to native if performance issues arise
+
+**Trade-offs:**
+- ✅ Faster time-to-market
+- ✅ Smaller team requirements
+- ⚠️ Slightly larger bundle size
+- ⚠️ Native performance not critical for CRUD app
+
+### ADR-002: PDF-First vs API-First
+**Decision:** PDF upload (not Daraja API)  
 **Status:** ✅ APPROVED  
-**Date:** 2025-10-22
+**Date:** 2025-01-13
 
-**Context:**
-- Kenianischer Markt ist 80,8% Android-dominiert
-- Offline-First ist kritische Anforderung (unreliable connectivity)
-- Finanz-App benötigt höchste Sicherheit und Performance
-- Zukünftige SMS-Parsing-Integration geplant
-
-**Reason:**  
-- **Beste Offline-Performance:** Room DB mit native integration, WorkManager für robustes Background-Sync
-- **Zukunftssichere SMS-Parsing-Fähigkeit:** READ_SMS Android-Permission nur in nativen Apps zuverlässig
-- **Finanz-Apps benötigen maximale Sicherheit & Reaktionsfähigkeit:** Direkter Zugriff auf Hardware-Security (Keystore)
-- **Schnellere Time-to-Market für MVP:** Fokus auf eine Plattform = schnellere Iteration
-- **Kleinere APK-Größe:** Kritisch für Nutzer mit begrenztem Speicher/Datenvolumen
-
-**Alternatives Considered:**
-- **Flutter:** 
-  - ❌ Cross-Platform-Vorteil nicht relevant (iOS nur 15% Markt)
-  - ❌ Größere APK-Größe (~40MB vs ~15MB native)
-  - ❌ Schlechtere Offline-Performance mit sqflite
-  - ❌ SMS-Permissions komplexer zu handhaben
-- **React Native:** 
-  - ❌ Weniger native Integrations
-  - ❌ Performance-Bottlenecks bei großen lokalen Datenbanken
-  - ❌ Bridge-Overhead für häufige DB-Operationen
-
-**Consequences:**
-- ✅ iOS-Nutzer werden über PWA bedient (Post-MVP)
-- ✅ Aktueller React-Prototype wird zu PWA-Codebase
-- ✅ Entwickler benötigen Kotlin + Android-Expertise
-
-### ADR-002: FastAPI statt Django/Flask für Backend
-**Decision:** FastAPI mit Python 3.11+  
 **Reason:**
-- Modern async-Support (wichtig für concurrency bei Document-Parsing)
-- Automatische OpenAPI-Dokumentation (erleichtert API-Entwicklung & Testing)
-- Pydantic-Integration für Type-Safe-Validation (reduziert Bugs)
-- Beste Python-Library-Support für Document-Parsing (Kreuzberg, Unstructured)
+- **Inclusivity:** Daraja API requires registered business (excludes 70%+ informal SMEs)
+- **Universality:** Everyone has M-Pesa PDFs (even without Paybill/Till number)
+- **No Partnership Friction:** No need for Safaricom API license (months of negotiations)
+- **User Control:** Users decide what data to share (privacy advantage)
 
-**Alternatives Considered:**
-- Django → Zu viel Boilerplate für MVP, monolithischer Ansatz
-- Flask → Weniger moderne Features, manuelle OpenAPI-Integration nötig
+**Trade-offs:**
+- ✅ Broader market access
+- ✅ Faster MVP launch
+- ⚠️ Parsing accuracy challenge (mitigated with 90%+ target)
 
-### ADR-003: File-Upload statt direkter M-Pesa-API-Integration
-**Decision:** User lädt PDF/CSV hoch (keine Live-API-Anbindung zu Safaricom)  
+### ADR-003: SACCO-First vs Consumer-First GTM
+**Decision:** B2B2C via SACCO partnerships  
+**Status:** ✅ APPROVED  
+**Date:** 2025-01-13
+
 **Reason:**
-- **Machbarkeit:** Keine Safaricom-API-Lizenz nötig (monatelanger Prozess, hohe Kosten)
-- **Time-to-Market:** Schnellerer MVP-Launch (keine Verhandlungen mit Safaricom)
-- **User-Mental-Model:** KMU erhalten bereits monatliche Statements per E-Mail → bekannter Workflow
-- **Datenschutz:** User hat volle Kontrolle über Daten (kein automatischer Bank-Zugriff)
+- **Lower CAC:** KES 300 via partnerships vs KES 1,500+ direct (5x better)
+- **Faster scale:** 1 SACCO = 10K potential users
+- **Credibility:** SACCO endorsement = trust signal for members
+- **Precedent:** Kwara, Branch proven SACCO partnership model works
 
-**Alternatives Considered:**
-- Direkte API-Integration → Nicht realistisch für Seed-Phase-Startup
+**Trade-offs:**
+- ✅ 41:1 LTV:CAC ratio
+- ✅ Sustainable growth
+- ⚠️ Partnership sales cycle (2-3 months)
+- ⚠️ Dependency on SACCO buy-in
 
 ---
 
-## Next Steps: Phase 2 (Architecture Design)
+## Next Steps
 
-Nach Bestätigung dieser Product Vision geht es weiter mit:
+### Immediate (This Week: Jan 13-19)
+- [ ] LinkedIn outreach to 5 SACCO CEOs
+- [ ] Download 3 M-Pesa PDFs for parsing PoC
+- [ ] Update waitlist page with loan-access messaging
+- [ ] Schedule Grace interviews (10 SMEs for WTP validation)
 
-1. **Detaillierte Architektur-Dokumentation** (`/docs/ARCHITECTURE.md`)
-2. **Ordnerstruktur-Design** (Feature-based vs. Layer-based)
-3. **API-Design** (Backend-Endpoints, Request/Response-Schemas)
-4. **Data-Flow-Diagramme** (User-Action → Component → API → DB → Sync)
-5. **Testing-Strategie** (Unit/Integration/E2E, Coverage-Ziele)
-6. **CI/CD-Pipeline-Details** (GitHub Actions Workflows)
+### Short-Term (Next 2 Weeks: Jan 13-27)
+- [ ] PDF parsing PoC: 90%+ accuracy on 20 PDFs
+- [ ] SACCO conversations: 2-3 calls scheduled
+- [ ] Waitlist: 30+ signups
+- [ ] Decision Gate (Jan 27): GO/PIVOT/STOP
+
+### Medium-Term (Feb-Mar 2025: If GO)
+- [ ] MVP Build: FastAPI backend + React Native app
+- [ ] SACCO Pilot Deck creation
+- [ ] Partnership agreements with 2-3 SACCOs
+- [ ] Pilot launch: 500-1,000 users
 
 ---
 
 ## Review & Approval
 
-**Status:** ⏳ Warte auf User-Bestätigung
+**Status:** ✅ APPROVED (v2.0 - Strategic Pivot)  
+**Date:** 13 January 2025
 
-**Fragen für Review:**
-1. ✅ **Tech-Stack OK?** (Native Android MVP, FastAPI Backend, PostgreSQL)
-2. ✅ **MVP-User-Stories decken Kern-Problem?** (Upload → Kategorisieren → eTIMS-Export)
-3. ✅ **Offline-First-Ansatz akzeptabel?** (Room DB + Sync-Manager)
-4. ✅ **Preis-Modell realistisch?** (Freemium + KSh 500/Monat Standard-Tier)
-5. ✅ **Out-of-Scope-Entscheidungen sinnvoll?** (Keine SMS-Parsing, keine iOS-Native im MVP)
+**Key Changes from v1.0:**
+1. **Primary Pain:** Loan rejection >> time-saving from bookkeeping
+2. **GTM:** SACCO partnerships >> consumer-first
+3. **Product:** PDF-first offline bookkeeping for loan-access
+4. **Tech:** React Native + Expo >> Native Kotlin (speed priority)
+5. **Timeline:** 2-week validation >> then GO/NO-GO decision
 
-**Approval:** Bitte bestätige mit "✅ Product Vision approved – weiter mit Phase 2 (Architecture)" oder gib Feedback zu Anpassungen.
+**Next Document:** [`MVP-PLAN.md`](./MVP-PLAN.md) - Detailed 90-day execution plan
 
 ---
 
 **Version History:**
-- v1.0 (21.10.2025) – Initial Product Vision basierend auf Due-Diligence-Analyse
+- v1.0 (21.10.2024) – Initial Product Vision (bookkeeping + eTIMS focus)
+- v2.0 (13.01.2025) – Strategic Pivot (loan-access + SACCO partnerships focus)
+
+---
+
+**END OF PRODUCT VISION v2.0**
