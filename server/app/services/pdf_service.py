@@ -199,17 +199,20 @@ class PDFParserService:
             column_mapping = {
                 "receipt": "transaction_id",
                 "receipt no": "transaction_id",
+                "receipt no.": "transaction_id",
                 "receipt number": "transaction_id",
                 "transaction id": "transaction_id",
                 "transaction number": "transaction_id",
                 "trans id": "transaction_id",
                 "date": "date",
-                "completion time": "time",
+                "completion time": "date_time",  # Combined date+time field
                 "time": "time",
                 "details": "description",
                 "transaction details": "description",
                 "description": "description",
                 "narration": "description",
+                "transaction status": "status",
+                "status": "status",
                 "paid in": "credit",
                 "paid in (ksh)": "credit",
                 "credit": "credit",
@@ -238,22 +241,31 @@ class PDFParserService:
             if not transaction_id:
                 return None
 
-            date_value = self._clean_string(row.get("date"))
-            parsed_date = self._parse_date(date_value)
+            # Try combined date_time field first (for "Completion Time" column)
+            date_value = self._clean_string(row.get("date_time"))
+            if not date_value:
+                date_value = self._clean_string(row.get("date"))
+            
+            # Parse date (may include time)
+            parsed_date, parsed_time = self._parse_date_time(date_value)
             if not parsed_date:
                 return None
+
+            # Override time if separate time column exists
+            time_value = self._clean_string(row.get("time"))
+            if time_value:
+                parsed_time = self._parse_time(time_value)
 
             amount = self._resolve_amount_from_row(row)
             if amount is None:
                 return None
 
             description = self._clean_string(row.get("description")) or None
-            time_value = self._parse_time(self._clean_string(row.get("time")))
 
             return ParsedTransaction(
                 transaction_id=transaction_id,
                 date=parsed_date,
-                time=time_value,
+                time=parsed_time,
                 description=description,
                 amount=amount,
             )
@@ -328,7 +340,11 @@ class PDFParserService:
             return None
 
         value = value.strip()
-        formats = ["%d/%m/%Y", "%d/%m/%y", "%d-%m-%Y", "%Y-%m-%d"]
+        # Split if combined date+time (e.g., "2025-08-19 11:36:34")
+        if " " in value:
+            value = value.split(" ")[0]
+        
+        formats = ["%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y", "%d-%m-%Y"]
         for fmt in formats:
             try:
                 parsed = datetime.strptime(value, fmt)
@@ -337,6 +353,33 @@ class PDFParserService:
                 continue
         logger.debug("Could not parse date from value '%s'", value)
         return None
+
+    def _parse_date_time(self, value: Optional[str]) -> tuple[Optional[str], Optional[str]]:
+        """Parse combined date+time field, return (date, time) tuple."""
+        if not value:
+            return None, None
+
+        value = value.strip()
+        
+        # Try combined datetime formats
+        combined_formats = [
+            "%Y-%m-%d %H:%M:%S",
+            "%d/%m/%Y %H:%M:%S",
+            "%d/%m/%y %H:%M:%S",
+            "%Y-%m-%d %H:%M",
+            "%d/%m/%Y %H:%M",
+        ]
+        
+        for fmt in combined_formats:
+            try:
+                parsed = datetime.strptime(value, fmt)
+                return parsed.strftime("%Y-%m-%d"), parsed.strftime("%H:%M:%S")
+            except ValueError:
+                continue
+        
+        # Fallback: try as date only
+        date_only = self._parse_date(value)
+        return date_only, None
 
     def _parse_time(self, value: Optional[str]) -> Optional[str]:
         if not value:

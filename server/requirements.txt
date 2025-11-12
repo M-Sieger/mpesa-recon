@@ -26,7 +26,7 @@ tabulate==0.9.0  # Reporting in parser test harness
 httpx==0.25.2
 
 # CORS
-python-cors==1.0.0
+fastapi-cors==0.0.6
 
 # Testing
 pytest==7.4.3

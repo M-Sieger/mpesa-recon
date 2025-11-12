@@ -67,18 +67,45 @@ fokussiert M-Recon auf Loan-Access für Informal Sector via PDF-Parsing + SACCO-
 
 ### 1. Product Strategy: PDF-First Offline Bookkeeping
 ```
-Core Features (MVP):
-  ✅ PDF Upload (passwort-geschützt mit ID number)
-  ✅ Auto-Parsing (Transactions → Categories)
-  ✅ Financial Summary (6-12 month reports)
-  ✅ CSV Export (manual eTIMS entry)
-  ✅ Offline-First (React Native/Flutter + SQLite)
+Core Features (MVP - 4 Layers):
+  
+  LAYER 1: Extraction (✅ DONE - 100% accuracy!)
+    → PDFPlumber-based parser
+    → Password-protected PDF support (ID number)
+    → Extract: date, amount, description, transaction ID
+  
+  LAYER 2: Categorization (⏸️ IN PROGRESS - Critical!)
+    → Rule-based classifier (Business/Personal)
+    → 6-8 core categories
+    → Income vs Expense detection
+  
+  LAYER 3: Financial Summary (⏸️ IN PROGRESS - Critical!)
+    → 6-month aggregations (Total Income/Expenses)
+    → Monthly averages
+    → Cashflow trends (growing/stable/declining)
+    → Loan capacity estimate
+  
+  LAYER 4: Professional Reports (⏸️ IN PROGRESS - Critical!)
+    → PDF report generation (ReportLab)
+    → Bank statement quality
+    → "Submit to SACCO" ready
+    → CSV export (manual eTIMS entry)
+  
+  LAYER 5: Offline Mobile App (⏸️ Phase 1 Feb-Mar)
+    → React Native + SQLite
+    → Local processing
+    → Background sync
 
 Deferred (Phase 2, Month 4-6):
   ⏸️ eTIMS API Integration
   ⏸️ ML-based Categorization
   ⏸️ Bank Statement Support
   ⏸️ USSD Version (*XXX#)
+
+CRITICAL INSIGHT (Jan 13):
+  Parser alone (Layer 1) = no value to SACCO
+  Must complete Layers 2-4 for demo-ready MVP
+  Timeline: 5 days (Jan 13-17) before SACCO pitches
 ```
 
 ### 2. GTM Strategy: SACCO-Partnership-Driven
@@ -119,21 +146,52 @@ Revenue Streams:
 
 ### **PHASE 0: VALIDATION (Jan 13 - Jan 27, 2025)** ← WIR SIND HIER
 ```
-Week 1 (Jan 13-19):
-  [ ] SACCO Outreach: 5 CEOs via LinkedIn
-  [ ] PDF PoC: 20 real PDFs, measure accuracy
-  [ ] Waitlist Launch: m-recon.com live
-  [ ] Grace Interviews: 10 SMEs (WTP validation)
+Week 1 (Jan 13-17): MVP VALUE LAYER BUILD
+  Day 1 (Jan 13):
+    [✅] PDF Parser: Extract transactions (100% accuracy achieved!)
+    [ ] Categorization Logic: Build rule-based classifier
+         → Business vs Personal income/expenses
+         → 6-8 core categories (payments, transfers, bills, etc.)
+  
+  Day 2 (Jan 14):
+    [ ] Test Categorization: Validate on 124 transactions
+    [ ] Summary Generator: Build financial aggregation logic
+         → Total income/expenses (6 months)
+         → Monthly averages
+         → Cashflow trends
+  
+  Day 3 (Jan 15):
+    [ ] PDF Report Generator: Professional output format
+         → 1-page summary (bank statement style)
+         → Income/Expense breakdown
+         → Loan capacity estimate
+  
+  Day 4 (Jan 16):
+    [ ] End-to-End Testing: Full pipeline
+         → Upload PDF → Parse → Categorize → Report
+    [ ] Polish: Fix edge cases, improve formatting
+  
+  Day 5 (Jan 17):
+    [ ] Demo Prep: Test with 2-3 different PDFs
+    [✅] DEMO-READY: Can show PDF → Professional Report
 
-Week 2 (Jan 20-27):
-  [ ] SACCO Follow-ups: 2-3 calls scheduled
-  [ ] Technical Decision: PDF parsing >85% accuracy?
-  [ ] Metrics Check: 30+ signups, 60%+ WTP?
+Week 2 (Jan 20-27): MARKET VALIDATION
+  [ ] SACCO Outreach: 5 CEOs via LinkedIn (with working demo!)
+  [ ] SACCO Demos: Show live PDF → Report transformation
+  [ ] Waitlist Launch: m-recon.com live (optional)
+  [ ] Grace Interviews: 10 SMEs (WTP validation)
+  [ ] Technical Validation: Test with 10+ real PDFs
   
 DECISION GATE (Jan 27):
-  ✅ GO: If 2+ SACCO interest + 85%+ parsing + 30+ signups → START MVP
-  ⚠️ PIVOT: If weak signals → Adjust strategy, retry
-  ❌ STOP: If no interest + <70% parsing → Reconsider
+  ✅ GO: If 2+ SACCO interest + demo works + 60%+ WTP → START MVP
+  ⚠️ PIVOT: If weak SACCO interest → Adjust pitch/features
+  ❌ STOP: If demo breaks or no demand → Reconsider
+
+CRITICAL PATH CHANGE:
+  OLD: Parser PoC → SACCO Outreach → Decision
+  NEW: Parser PoC → Value Layer (Categories/Report) → SACCO Demos → Decision
+  
+WHY: Parser alone = no value. Must show professional report for SACCO buy-in.
 ```
 
 ### **PHASE 1: MVP BUILD (Feb 1 - Mar 31, 2025)**
@@ -142,18 +200,40 @@ Timeline: 8 weeks
 Team: 1 founder (you) + freelancers (frontend, mobile)
 Budget: ~KES 300K (USD $2,300)
 
+PREREQUISITE FROM PHASE 0:
+  ✅ Core Value Layer Built:
+     → Transaction Categorization (Business/Personal)
+     → Financial Summary Generator
+     → Professional PDF Report Output
+  ✅ Validated with 2+ SACCOs (they want it!)
+
 Deliverables:
-  ✅ Backend: FastAPI + PostgreSQL/Supabase (PDF upload, parsing, reports)
+  ✅ Backend API: FastAPI + PostgreSQL/Supabase
+      → PDF upload endpoint
+      → Parser integration (already built!)
+      → Categorization service (already built!)
+      → Report generation (already built!)
+      → User authentication
   ✅ Web App: React (waitlist → onboarding → upload → report)
-  ✅ Android MVP: React Native (offline-first, PDF upload)
-  ✅ SACCO Pilot Deck: Partnership proposal + demo
+      → Upload PDF interface
+      → View transactions (categorized)
+      → Download professional report
+  ✅ Android MVP: React Native (offline-first)
+      → Offline PDF upload
+      → Local categorization
+      → Background sync to server
+  ✅ SACCO Integration: API for bulk member reports
 
 Tech Stack:
   - Backend: FastAPI (Python) + Supabase (auth, storage)
-  - Parsing: PDFPlumber + custom logic
+  - Parsing: PDFPlumber + custom logic (DONE in Phase 0!)
+  - Categorization: Rule-based classifier (DONE in Phase 0!)
+  - Reports: ReportLab PDF generation (DONE in Phase 0!)
   - Frontend: React (Vercel deployment)
   - Mobile: React Native (Android-first)
   - Offline: SQLite + background sync
+  
+FOCUS: Wrap working core logic in production API + UI
 ```
 
 ### **PHASE 2: PILOT LAUNCH (Apr 1 - Jun 30, 2025)**
