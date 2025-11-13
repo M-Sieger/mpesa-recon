@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class UploadResponse(BaseModel):
     """Response after file upload"""
     model_config = ConfigDict(from_attributes=True)
-    
+
     id: int
     filename: str
     file_type: str
@@ -26,15 +26,10 @@ class UploadResponse(BaseModel):
 class ParseResponse(BaseModel):
     """Response after parsing"""
     upload: UploadResponse
-    transactions: List["TransactionResponse"]
+    transactions: List["TransactionResponse"]  # Forward reference as string
     success: bool
     message: str
     parsing_confidence: Optional[float] = Field(
         None,
         description="Confidence score of parsing (0-1)"
     )
-
-
-# Resolve forward references
-from app.schemas.transaction import TransactionResponse
-ParseResponse.model_rebuild()

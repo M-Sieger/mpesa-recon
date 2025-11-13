@@ -4,15 +4,15 @@ Pydantic models for API request/response
 """
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
-from datetime import date, time, datetime
+from datetime import date as date_type, time as time_type, datetime
 from decimal import Decimal
 
 
 class TransactionBase(BaseModel):
     """Base transaction schema"""
     transaction_id: str = Field(..., description="M-Pesa transaction ID")
-    date: date = Field(..., description="Transaction date")
-    time: Optional[time] = Field(None, description="Transaction time")
+    date: date_type = Field(..., description="Transaction date")
+    time: Optional[time_type] = Field(None, description="Transaction time")
     description: Optional[str] = Field(None, description="Transaction details")
     amount: Decimal = Field(..., description="Transaction amount")
     category: Optional[str] = Field(None, description="User-defined category")
