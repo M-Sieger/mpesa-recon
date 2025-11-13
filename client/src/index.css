@@ -1,132 +1,166 @@
-/* index.css – globales Styling für das M-PESA Tool */
+/**
+ * index.css – Global Styling for M-Recon
+ *
+ * Purpose: Base Tailwind imports + custom utility classes
+ * Why: Provides foundation for Tailwind CSS framework and extends it with custom styles
+ *
+ * Architecture:
+ * 1. Tailwind base layers (reset, variables)
+ * 2. Google Fonts for typography (Inter, Poppins)
+ * 3. Custom utilities for animations and effects
+ */
 
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ============================================
+   TAILWIND BASE LAYERS
+   ============================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   GOOGLE FONTS
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  /*
+   * Global HTML/Body defaults
+   * Why: Ensures consistent rendering across browsers, smooth scrolling
+   */
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-gray-900 bg-gray-50;
+  }
+
+  /*
+   * Focus rings for accessibility
+   * Why: Provides visible keyboard navigation indicators
+   */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
 }
 
-/* Global */
-body {
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: #111;
-  color: #f5f5f5;
-  line-height: 1.5;
+/* ============================================
+   CUSTOM COMPONENTS
+   ============================================ */
+@layer components {
+  /*
+   * Card component - used for content containers
+   * Why: Consistent styling for elevated content sections
+   */
+  .card {
+    @apply bg-white rounded-card shadow-soft border border-gray-100 p-6;
+  }
+
+  .card-hover {
+    @apply card transition-shadow hover:shadow-medium;
+  }
+
+  /*
+   * Button variants (if not using Tailwind directly)
+   * Why: Reusable button styles for consistency
+   */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium
+           py-2.5 px-5 rounded-lg transition-colors shadow-sm hover:shadow-md
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium
+           py-2.5 px-5 rounded-lg transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /*
+   * Input field styling
+   * Why: Consistent form inputs across the app
+   */
+  .input-field {
+    @apply block w-full px-3 py-2.5 border border-gray-300 rounded-lg
+           focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+           disabled:bg-gray-100 disabled:cursor-not-allowed;
+  }
 }
 
-/* Wrapper für alles */
-.app-wrapper {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+/* ============================================
+   CUSTOM UTILITIES
+   ============================================ */
+@layer utilities {
+  /*
+   * Gradient text effect
+   * Why: Used for hero headings and special emphasis
+   */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+  }
+
+  /*
+   * Smooth fade-in animation
+   * Why: Polished loading experience for dynamic content
+   */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /*
+   * Loading spinner animation
+   * Why: Visual feedback during async operations
+   */
+  .spinner {
+    @apply inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin;
+  }
+
+  /*
+   * Glassmorphism effect
+   * Why: Modern UI aesthetic for overlays and modals
+   */
+  .glass {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg;
+  }
 }
 
-
-/* Header */
-.app-header {
-  width: 100%;
-  max-width: 1024px;
-  text-align: center;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #333;
-  margin-bottom: 2rem;
-}
-
-.app-header h1 {
-  font-size: 1.6rem;
-  color: #f5f5f5;
-}
-
-/* Hauptbereich */
-.main-content {
-  width: 100%;
-  max-width: 900px;
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Tabelle */
+/* ============================================
+   LEGACY COMPATIBILITY (OLD COMPONENTS)
+   ============================================ */
+/*
+ * Note: These classes are kept for backwards compatibility
+ * with old components (UploadAndPreview.tsx, etc.)
+ * TODO: Migrate old components to Tailwind and remove these
+ */
 .upload-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  @apply w-full border-collapse mt-4 text-sm;
 }
 
 .upload-table th,
 .upload-table td {
-  border: 1px solid #333;
-  padding: 8px;
-  text-align: left;
+  @apply border border-gray-300 px-3 py-2 text-left;
 }
 
 .upload-table th {
-  background-color: #2a2a2a;
-  color: #fff;
+  @apply bg-gray-100 text-gray-700 font-semibold;
 }
 
-/* Buttons */
-button {
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  margin-top: 1.5rem;
-  border-radius: 4px;
-  border: none;
-  background-color: #1e88e5;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #1565c0;
-}
-
-button:disabled {
-  background-color: #555;
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Upload-Feld */
-input[type="file"] {
-  background: #1f1f1f;
-  color: #f5f5f5;
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #444;
-  margin-top: 1rem;
-  width: 100%;
-}
-
-/* Utility */
-.text-center {
-  text-align: center;
-}
-
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 2rem; }
-
-.bold { font-weight: bold; }
-
-/* Responsive */
-@media (max-width: 600px) {
-  .main-content {
-    padding: 1rem;
-  }
-
-  .upload-table th,
-  .upload-table td {
-    font-size: 0.75rem;
-    padding: 6px;
-  }
-
-  button {
-    width: 100%;
-  }
+.upload-table tbody tr:hover {
+  @apply bg-gray-50;
 }
