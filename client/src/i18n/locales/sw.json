@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "M-Recon",
+    "tagline": "Ripoti za Mkopo kutoka kwa Taarifa yako ya M-Pesa"
+  },
+  "upload": {
+    "title": "Tengeneza Ripoti ya Mkopo",
+    "subtitle": "Pakia taarifa yako ya M-Pesa ili kuanza",
+    "dragdrop": "Buruta PDF hapa, au bonyeza kuchagua",
+    "dragactive": "Acha PDF hapa...",
+    "fileSelected": "Faili iliyochaguliwa:",
+    "maxSize": "Ukubwa wa juu: 10MB",
+    "acceptedFormat": "Muundo unaokubaliwa: PDF pekee"
+  },
+  "form": {
+    "memberName": "Jina la Mwanachama",
+    "memberNamePlaceholder": "Weka jina lako kamili",
+    "mobile": "Nambari ya Simu",
+    "mobilePlaceholder": "+254...",
+    "email": "Barua Pepe",
+    "emailPlaceholder": "barua@pepe.com (si lazima)",
+    "password": "Nywila ya PDF",
+    "passwordPlaceholder": "Kawaida nambari yako ya kitambulisho (kama imefungwa)",
+    "notes": "Maelezo Mengine",
+    "notesPlaceholder": "Maelezo yoyote ya ziada (si lazima)"
+  },
+  "progress": {
+    "parsing": "Kusoma PDF...",
+    "parsingMessage": "Kusoma taarifa yako ya M-Pesa...",
+    "categorizing": "Kuweka aina za miamala...",
+    "categorizingMessage": "Kutambua miamala ya biashara na binafsi...",
+    "summarizing": "Kuhesabu muhtasari wa fedha...",
+    "summarizingMessage": "Kuhesabu vipimo vya afya yako ya kifedha...",
+    "generating": "Kuunda ripoti...",
+    "generatingMessage": "Kutengeneza ripoti yako ya kitaaluma kwa mkopo...",
+    "complete": "Ripoti iko tayari!",
+    "completeMessage": "Ripoti yako iko kamili na iko tayari kupakuliwa!"
+  },
+  "success": {
+    "title": "Ripoti Iko Tayari!",
+    "message": "Ripoti yako ya kifedha kwa mkopo imetengenezwa kwa mafanikio",
+    "verificationCode": "Msimbo wa Uthibitisho",
+    "verificationInstructions": "Shiriki msimbo huu na SACCO au mkopaji wako ili kuthibitisha ripoti hii",
+    "downloadPrompt": "Pakua ripoti yako hapa chini au tengeneza nyingine"
+  },
+  "preview": {
+    "title": "Ripoti Yako ya Mkopo",
+    "nextSteps": "Hatua Zinazofuata",
+    "step1": "Pakua ripoti na uiwasilishe kwa SACCO au mkopaji wako",
+    "step2": "Shiriki msimbo wa uthibitisho unapoombwa",
+    "step3": "Ripoti yako ni halali kwa siku 90 kutoka tarehe iliyotengenezwa"
+  },
+  "button": {
+    "generate": "Tengeneza Ripoti",
+    "generating": "Inatengeneza...",
+    "download": "Pakua Ripoti",
+    "openNew": "Fungua katika Kichupo Kipya",
+    "tryAnother": "Tengeneza Ripoti Nyingine",
+    "cancel": "Ghairi"
+  },
+  "error": {
+    "invalidPdf": "Faili si sahihi. Tafadhali angalia taarifa yako.",
+    "noPdf": "Tafadhali pakia faili ya PDF",
+    "fileTooLarge": "Faili ni kubwa sana. Ukubwa wa juu ni 10MB.",
+    "required": "Sehemu hii inahitajika",
+    "invalidMobile": "Nambari ya simu si sahihi. Muundo: +254...",
+    "invalidEmail": "Barua pepe si sahihi",
+    "uploadFailed": "Kupakia kumeshindikana. Tafadhali jaribu tena.",
+    "networkError": "Hitilafu ya mtandao. Tafadhali angalia muunganisho wako.",
+    "passwordRequired": "PDF hii inalindwa na nywila. Tafadhali weka nywila.",
+    "noTransactions": "Hakuna miamala iliyopatikana katika PDF hii. Tafadhali angalia taarifa yako."
+  },
+  "validation": {
+    "nameRequired": "Jina la mwanachama linahitajika",
+    "mobileRequired": "Nambari ya simu inahitajika",
+    "mobileInvalid": "Tafadhali weka nambari sahihi ya simu ya Kenya (+254...)",
+    "emailInvalid": "Tafadhali weka barua pepe sahihi"
+  },
+  "footer": {
+    "poweredBy": "Imetolewa na M-Recon",
+    "helpText": "Unahitaji msaada? Wasiliana na support@m-recon.com",
+    "privacy": "Sera ya Faragha",
+    "terms": "Masharti ya Huduma"
+  }
+}

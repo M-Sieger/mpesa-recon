@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "M-Recon",
+    "tagline": "Loan-Ready Reports from Your M-Pesa Statement"
+  },
+  "upload": {
+    "title": "Generate Loan-Ready Report",
+    "subtitle": "Upload your M-Pesa statement to get started",
+    "dragdrop": "Drag & drop PDF here, or click to browse",
+    "dragactive": "Drop PDF here...",
+    "fileSelected": "File selected:",
+    "maxSize": "Maximum file size: 10MB",
+    "acceptedFormat": "Accepted format: PDF only"
+  },
+  "form": {
+    "memberName": "Member Name",
+    "memberNamePlaceholder": "Enter your full name",
+    "mobile": "Mobile Number",
+    "mobilePlaceholder": "+254...",
+    "email": "Email Address",
+    "emailPlaceholder": "your@email.com (optional)",
+    "password": "PDF Password",
+    "passwordPlaceholder": "Usually your ID number (if locked)",
+    "notes": "Additional Notes",
+    "notesPlaceholder": "Any additional information (optional)"
+  },
+  "progress": {
+    "parsing": "Parsing PDF...",
+    "parsingMessage": "Reading your M-Pesa statement...",
+    "categorizing": "Categorizing transactions...",
+    "categorizingMessage": "Identifying business and personal transactions...",
+    "summarizing": "Computing financial summary...",
+    "summarizingMessage": "Calculating your financial health metrics...",
+    "generating": "Building report...",
+    "generatingMessage": "Creating your professional loan-ready report...",
+    "complete": "Report ready!",
+    "completeMessage": "Your report is complete and ready for download!"
+  },
+  "success": {
+    "title": "Report Ready!",
+    "message": "Your loan-ready financial report has been generated successfully",
+    "verificationCode": "Verification Code",
+    "verificationInstructions": "Share this code with your SACCO or lender to verify this report",
+    "downloadPrompt": "Download your report below or generate another one"
+  },
+  "preview": {
+    "title": "Your Loan-Ready Report",
+    "nextSteps": "Next Steps",
+    "step1": "Download the report and submit it to your SACCO or lender",
+    "step2": "Share the verification code when requested",
+    "step3": "Your report is valid for 90 days from the date of generation"
+  },
+  "button": {
+    "generate": "Generate Report",
+    "generating": "Generating...",
+    "download": "Download Report",
+    "openNew": "Open in New Tab",
+    "tryAnother": "Generate Another Report",
+    "cancel": "Cancel"
+  },
+  "error": {
+    "invalidPdf": "Invalid PDF file. Please check your statement.",
+    "noPdf": "Please upload a PDF file",
+    "fileTooLarge": "File is too large. Maximum size is 10MB.",
+    "required": "This field is required",
+    "invalidMobile": "Invalid mobile number. Format: +254...",
+    "invalidEmail": "Invalid email address",
+    "uploadFailed": "Upload failed. Please try again.",
+    "networkError": "Network error. Please check your connection.",
+    "passwordRequired": "This PDF is password-protected. Please enter the password.",
+    "noTransactions": "No transactions found in this PDF. Please check your statement."
+  },
+  "validation": {
+    "nameRequired": "Member name is required",
+    "mobileRequired": "Mobile number is required",
+    "mobileInvalid": "Please enter a valid Kenyan mobile number (+254...)",
+    "emailInvalid": "Please enter a valid email address"
+  },
+  "footer": {
+    "poweredBy": "Powered by M-Recon",
+    "helpText": "Need help? Contact support@m-recon.com",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  }
+}

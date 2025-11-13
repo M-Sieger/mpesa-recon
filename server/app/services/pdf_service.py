@@ -317,7 +317,8 @@ class PDFParserService:
         if credit is not None and credit != Decimal("0"):
             return credit
         if debit is not None and debit != Decimal("0"):
-            return -debit
+            # Preserve a negative sign for debits even if the source already includes it
+            return debit if debit < 0 else -debit
         return base_amount if base_amount not in (None, Decimal("0")) else None
 
     def _parse_amount(self, value: object) -> Optional[Decimal]:

@@ -2,7 +2,7 @@
 Transaction Schemas
 Pydantic models for API request/response
 """
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from datetime import date, time, datetime
 from decimal import Decimal
@@ -32,10 +32,9 @@ class TransactionUpdate(BaseModel):
 
 class TransactionResponse(TransactionBase):
     """Schema for transaction response"""
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     upload_id: Optional[int]
     created_at: datetime
     updated_at: Optional[datetime]
-    
-    class Config:
-        from_attributes = True

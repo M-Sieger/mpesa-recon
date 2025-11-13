@@ -21,6 +21,7 @@ tabula-py==2.9.0
 openpyxl==3.1.2
 pikepdf==8.10.1  # For password-protected PDFs
 tabulate==0.9.0  # Reporting in parser test harness
+reportlab==4.2.0  # PDF report generation
 
 # HTTP Client (for external APIs)
 httpx==0.25.2
