@@ -23,6 +23,18 @@ interface MemberFormProps {
 
 export function MemberForm({ onSubmit, isLoading }: MemberFormProps) {
   const { t } = useTranslation();
+  const allowAnyMobile = import.meta.env.VITE_ALLOW_ANY_MOBILE === 'true';
+  const mobileValidationRules = allowAnyMobile
+    ? {
+        required: t('validation.mobileRequired'),
+      }
+    : {
+        required: t('validation.mobileRequired'),
+        pattern: {
+          value: /^\+254[17]\d{8}$/,
+          message: t('validation.mobileInvalid'),
+        },
+      };
   const {
     register,
     handleSubmit,
@@ -72,13 +84,7 @@ export function MemberForm({ onSubmit, isLoading }: MemberFormProps) {
           <input
             id="mobile"
             type="tel"
-            {...register('mobile', {
-              required: t('validation.mobileRequired'),
-              pattern: {
-                value: /^\+254[17]\d{8}$/,
-                message: t('validation.mobileInvalid'),
-              },
-            })}
+            {...register('mobile', mobileValidationRules)}
             className={`
               block w-full pl-10 pr-3 py-2.5 border rounded-lg
               focus:ring-2 focus:ring-primary-500 focus:border-primary-500
@@ -89,6 +95,9 @@ export function MemberForm({ onSubmit, isLoading }: MemberFormProps) {
           />
         </div>
         {errors.mobile && <p className="mt-1 text-sm text-error-600">{errors.mobile.message}</p>}
+        {allowAnyMobile && !errors.mobile && (
+          <p className="mt-1 text-xs text-gray-500">{t('validation.mobileTestMode')}</p>
+        )}
       </div>
 
       {/* Email (Optional) */}

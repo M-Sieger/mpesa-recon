@@ -2,18 +2,14 @@
 Upload Schemas
 Pydantic models for file upload responses
 """
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional, TYPE_CHECKING
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
-
-if TYPE_CHECKING:
-    from app.schemas.transaction import TransactionResponse
 
 
 class UploadResponse(BaseModel):
     """Response after file upload"""
     model_config = ConfigDict(from_attributes=True)
-    
+
     id: int
     filename: str
     file_type: str
@@ -23,18 +19,5 @@ class UploadResponse(BaseModel):
     uploaded_at: datetime
 
 
-class ParseResponse(BaseModel):
-    """Response after parsing"""
-    upload: UploadResponse
-    transactions: List["TransactionResponse"]
-    success: bool
-    message: str
-    parsing_confidence: Optional[float] = Field(
-        None,
-        description="Confidence score of parsing (0-1)"
-    )
-
-
-# Resolve forward references
-from app.schemas.transaction import TransactionResponse
-ParseResponse.model_rebuild()
+# ParseResponse removed due to circular import issues
+# Not needed for report generation API (uses FileResponse instead)

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     
     # Database
     DATABASE_URL: str = "postgresql://postgres:dev@localhost:5432/mpesa_recon"
+    SQLITE_FALLBACK_URL: str = "sqlite:///./mpesa_recon.db"
     
     # API
     API_V1_PREFIX: str = "/api/v1"

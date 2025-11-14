@@ -74,6 +74,7 @@
     "nameRequired": "Member name is required",
     "mobileRequired": "Mobile number is required",
     "mobileInvalid": "Please enter a valid Kenyan mobile number (+254...)",
+    "mobileTestMode": "Test mode enabled: any phone number format is accepted",
     "emailInvalid": "Please enter a valid email address"
   },
   "footer": {

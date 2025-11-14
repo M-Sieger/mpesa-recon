@@ -12,7 +12,7 @@ from datetime import datetime
 from app.database import get_db
 from app.models.upload import Upload, ParsingStatus
 from app.models.transaction import Transaction
-from app.schemas.upload import ParseResponse, UploadResponse
+from app.schemas.upload import UploadResponse
 from app.schemas.transaction import TransactionResponse
 from app.services.parser_service import parser_service
 from app.config import settings
@@ -20,7 +20,7 @@ from app.config import settings
 router = APIRouter(prefix="/upload", tags=["Upload"])
 
 
-@router.post("/", response_model=ParseResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def upload_file(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
@@ -116,14 +116,15 @@ async def upload_file(
         
         # Calculate parsing confidence (simplified)
         confidence = min(len(transactions) / len(parsed_data), 1.0) if parsed_data else 0.0
-        
-        return ParseResponse(
-            upload=UploadResponse.model_validate(upload),
-            transactions=[TransactionResponse.model_validate(t) for t in transactions],
-            success=True,
-            message=f"Successfully parsed {len(transactions)} transactions",
-            parsing_confidence=confidence
-        )
+
+        # Return simple dict (ParseResponse removed due to circular imports)
+        return {
+            "upload": UploadResponse.model_validate(upload),
+            "transactions": [TransactionResponse.model_validate(t) for t in transactions],
+            "success": True,
+            "message": f"Successfully parsed {len(transactions)} transactions",
+            "parsing_confidence": confidence
+        }
     
     except Exception as e:
         # Update upload status to failed

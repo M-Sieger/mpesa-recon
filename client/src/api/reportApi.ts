@@ -70,7 +70,7 @@ export async function generateReport(
     }
 
     const response = await axios.post<Blob>(
-      `${API_BASE_URL}/api/report/generate`,
+      `${API_BASE_URL}/api/v1/report/generate`,
       formData,
       {
         headers: {

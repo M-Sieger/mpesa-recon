@@ -4,14 +4,19 @@
  * Purpose: Base Tailwind imports + custom utility classes
  * Why: Provides foundation for Tailwind CSS framework and extends it with custom styles
  *
- * Architecture:
- * 1. Tailwind base layers (reset, variables)
+ * Architecture (Tailwind v3):
+ * 1. Tailwind base layers (@tailwind directives)
  * 2. Google Fonts for typography (Inter, Poppins)
- * 3. Custom utilities for animations and effects
+ * 3. Custom components and utilities using @layer
+ *
+ * Note: Using Tailwind v3 (stable, production-ready)
+ * - @tailwind directives for base/components/utilities
+ * - Configuration in tailwind.config.js
+ * - @apply directive for component classes
  */
 
 /* ============================================
-   TAILWIND BASE LAYERS
+   TAILWIND BASE LAYERS (v3)
    ============================================ */
 @tailwind base;
 @tailwind components;
@@ -66,7 +71,7 @@
   }
 
   /*
-   * Button variants (if not using Tailwind directly)
+   * Button variants
    * Why: Reusable button styles for consistency
    */
   .btn-primary {
@@ -90,6 +95,27 @@
            focus:ring-2 focus:ring-primary-500 focus:border-primary-500
            disabled:bg-gray-100 disabled:cursor-not-allowed;
   }
+
+  /*
+   * Legacy table styles (backwards compatibility)
+   * TODO: Migrate old components to Tailwind and remove these
+   */
+  .upload-table {
+    @apply w-full border-collapse mt-4 text-sm;
+  }
+
+  .upload-table th,
+  .upload-table td {
+    @apply border border-gray-300 px-3 py-2 text-left;
+  }
+
+  .upload-table th {
+    @apply bg-gray-100 text-gray-700 font-semibold;
+  }
+
+  .upload-table tbody tr:hover {
+    @apply bg-gray-50;
+  }
 }
 
 /* ============================================
@@ -105,33 +131,6 @@
   }
 
   /*
-   * Smooth fade-in animation
-   * Why: Polished loading experience for dynamic content
-   */
-  .fade-in {
-    animation: fadeIn 0.3s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /*
-   * Loading spinner animation
-   * Why: Visual feedback during async operations
-   */
-  .spinner {
-    @apply inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin;
-  }
-
-  /*
    * Glassmorphism effect
    * Why: Modern UI aesthetic for overlays and modals
    */
@@ -141,26 +140,31 @@
 }
 
 /* ============================================
-   LEGACY COMPATIBILITY (OLD COMPONENTS)
+   CUSTOM ANIMATIONS
    ============================================ */
 /*
- * Note: These classes are kept for backwards compatibility
- * with old components (UploadAndPreview.tsx, etc.)
- * TODO: Migrate old components to Tailwind and remove these
+ * Smooth fade-in animation
+ * Why: Polished loading experience for dynamic content
  */
-.upload-table {
-  @apply w-full border-collapse mt-4 text-sm;
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
 }
 
-.upload-table th,
-.upload-table td {
-  @apply border border-gray-300 px-3 py-2 text-left;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.upload-table th {
-  @apply bg-gray-100 text-gray-700 font-semibold;
-}
-
-.upload-table tbody tr:hover {
-  @apply bg-gray-50;
+/*
+ * Loading spinner animation
+ * Why: Visual feedback during async operations
+ */
+.spinner {
+  @apply inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin;
 }

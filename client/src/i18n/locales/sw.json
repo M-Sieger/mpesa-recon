@@ -74,6 +74,7 @@
     "nameRequired": "Jina la mwanachama linahitajika",
     "mobileRequired": "Nambari ya simu inahitajika",
     "mobileInvalid": "Tafadhali weka nambari sahihi ya simu ya Kenya (+254...)",
+    "mobileTestMode": "Hali ya majaribio imewashwa: muundo wowote wa nambari ya simu unakubalika",
     "emailInvalid": "Tafadhali weka barua pepe sahihi"
   },
   "footer": {
